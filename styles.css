@@ -15,7 +15,7 @@ body {
 }
 
 .LoveLetter__title {
-	font-size: 4rem;
+	font-size: 2rem;
 	font-weight: 600;
 	color: #615dec;
 	margin: 0;
@@ -30,11 +30,44 @@ body {
 	margin: auto;
 }
 
-.playertable {
-	position: relative; 
+
+.playertableA {
+	position: absolute;
+	top: 500px;
+	left: 585px;
+	height: 176px; 
+	width: 250px;
+	background-color: darkcyan;
+	/* background-position:0vw ; */
+}
+
+.playertableB {
+	position: absolute; 
+	top: 285px;
+	left: 945px;
 	height: 145px; 
 	width: 209px;
-	/* background-color: darkcyan; */
+	background-color: rgb(48, 56, 56);
+	/* background-position:0vw ; */
+}
+
+.playertableC {
+	position: absolute; 
+	top: 100px;
+	left: 605px;
+	height: 145px; 
+	width: 209px;
+	background-color: rgb(70, 55, 107);
+	/* background-position:0vw ; */
+}
+
+.playertableD {
+	position: absolute; 
+	top: 285px;
+	left: 250px;
+	height: 145px; 
+	width: 209px;
+	background-color: rgb(47, 201, 47);
 	/* background-position:0vw ; */
 }
 
@@ -57,78 +90,35 @@ body {
 	opacity: 1;
 }
 
-.LoveLetter__button {
-	display: inline;
-	background: none;
-	border: none;
-	border-radius: 50%;
-}
-
-.LoveLetter__button img {
-	width: 80px;
-	height: 80px;
-	border: 1px solid transparent;
-	border-radius: 50%;
-	cursor: pointer;
-}
-
-.LoveLetter__button img:hover {
-	border: 1px solid black;
-	border-radius: 50%;
-}
-
-.LoveLetter__button:focus {
-	outline: none;
-}
-
-.LoveLetter__display {
-	position: relative;
-	padding: 15px;
-	margin: 3rem;
-	max-width: 80rem;
-	display: flex;
-	flex-direction: column;
-	flex-wrap: wrap;
-	align-items: center;
-	font-size: 0.6rem;
-}
-.LoveLetter__gear {
-	background-image: url("./images/loading.gif");
-	height: 100%;
-	width: 100%;
-	background-repeat: no-repeat;
-	background-position: center;
-	/* background-color: #cccccc; */
-}
-
-.LoveLetter__display-source-wrapper {
-	position: absolute;
-	font-size: 12px;
-	left: 50%;
-	margin-right: 50%;
-	transform: translate(-50%, -50%);
-	min-width: 100em;
+.playertablename {
 	text-align: center;
-	bottom: 0;
 }
 
-#display {
-	object-fit: contain;
-	width: 50rem;
-	height: 30rem;
-	margin-bottom: 1rem;
+.tablecenter {
+	position: absolute;
+	top: 260px;
+	left: 565px;
+	height: 200px; 
+	width: 300px;
+	background-color: rgb(211, 18, 18);
 }
 
-#source {
-	display: inline;
-	color: black;
+.discardpile {
+	height: 200px; 
+	width: 150px;
+	float: left;
 }
 
-.disabled {
-	opacity: 0.2;
+.deck {
+	height: 200px; 
+	width: 150px;
+	float: left;
 }
 
-.disabled:hover {
-	border-color: transparent !important;
-	cursor: not-allowed;
+.lastplayed {
+	text-align: center;
+}
+
+.cardremaining {
+	text-align: center;
 }
