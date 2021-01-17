@@ -1,0 +1,134 @@
+html,
+body {
+	height: 100%;
+	overflow: hidden;
+	box-sizing: border-box;
+	background: #eee9e9;
+}
+
+.LoveLetter__container {
+	height: 100%;
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: space-evenly;
+}
+
+.LoveLetter__title {
+	font-size: 4rem;
+	font-weight: 600;
+	color: #615dec;
+	margin: 0;
+	margin-top: 2rem;
+}
+
+.LoveLetter__main {
+	display: flex;
+	flex-direction: row;
+	justify-content: space-between;
+	align-items: center;
+	margin: auto;
+}
+
+.playertable {
+	position: relative; 
+	height: 145px; 
+	width: 209px;
+	/* background-color: darkcyan; */
+	/* background-position:0vw ; */
+}
+
+.playercard {
+	top: 0px; 
+	left: 107px; 
+	width: 102px; 
+	height: 140px; 
+	/* background-image: url(&quot;https://x.boardgamearena.net/data/themereleases/170512-1002/games/loveletter/170411-1615/img/cards_small.jpg&quot;);  */
+	opacity: 1;
+	float: left;
+}
+
+.playercard {
+	/* top: 0px; 
+	left: 107px; 
+	width: 102px; 
+	height: 140px;  */
+	background-image: url(&quot;https://x.boardgamearena.net/data/themereleases/170512-1002/games/loveletter/170411-1615/img/cards_small.jpg&quot;); 
+	opacity: 1;
+}
+
+.LoveLetter__button {
+	display: inline;
+	background: none;
+	border: none;
+	border-radius: 50%;
+}
+
+.LoveLetter__button img {
+	width: 80px;
+	height: 80px;
+	border: 1px solid transparent;
+	border-radius: 50%;
+	cursor: pointer;
+}
+
+.LoveLetter__button img:hover {
+	border: 1px solid black;
+	border-radius: 50%;
+}
+
+.LoveLetter__button:focus {
+	outline: none;
+}
+
+.LoveLetter__display {
+	position: relative;
+	padding: 15px;
+	margin: 3rem;
+	max-width: 80rem;
+	display: flex;
+	flex-direction: column;
+	flex-wrap: wrap;
+	align-items: center;
+	font-size: 0.6rem;
+}
+.LoveLetter__gear {
+	background-image: url("./images/loading.gif");
+	height: 100%;
+	width: 100%;
+	background-repeat: no-repeat;
+	background-position: center;
+	/* background-color: #cccccc; */
+}
+
+.LoveLetter__display-source-wrapper {
+	position: absolute;
+	font-size: 12px;
+	left: 50%;
+	margin-right: 50%;
+	transform: translate(-50%, -50%);
+	min-width: 100em;
+	text-align: center;
+	bottom: 0;
+}
+
+#display {
+	object-fit: contain;
+	width: 50rem;
+	height: 30rem;
+	margin-bottom: 1rem;
+}
+
+#source {
+	display: inline;
+	color: black;
+}
+
+.disabled {
+	opacity: 0.2;
+}
+
+.disabled:hover {
+	border-color: transparent !important;
+	cursor: not-allowed;
+}
