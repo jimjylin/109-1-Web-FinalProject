@@ -13,21 +13,21 @@ import {
 const client = new WebSocket('ws://localhost:4000')
 
 function App() {
-  const [board, setBoard] = useState([[],[],[],[]])
-  const [invisible, setInvisible] = useState([])
+  const [board, setBoard] = useState([[],[],[],[]])  //
+  const [invisible, setInvisible] = useState([])     //
   const [alive, setAlive] = useState([])             //array, true if that player is alive
   const [guessNum,setGuessNum] = useState('')        //string, the number guessed when you played 1
-  const [guess,setGuess] = useState(false)           //bool, true if need something to type guessNum
+  const [guess,setGuess] = useState(false)           
   const [choose,setChoose] = useState('')            //string, the player's number you want to cast card
-  const [extraInput,setExtraInput] = useState(false) //bool, true if need something to type choose
-  const [status, setStatus] = useState({})           //JSON{type, msg}, msg you want to present above the page
-  const [state, setState] = useState('lobby')        //string, the state of you right now
+  const [extraInput,setExtraInput] = useState(false) 
+  const [status, setStatus] = useState({})           
+  const [state, setState] = useState('lobby')        
   const [playerNames, setPlayerNames] = useState([]) //array, the name of all players on this table
   const [hand, setHand] = useState([])               //array, the card you have
   const [username, setUsername] = useState('')       //string, your name
   const [body, setBody] = useState('')               
   const [seatNo, setseatNo] = useState(-1)
-  const [turn, setTurn] = useState(-1)
+  const [turn, setTurn] = useState(-1)               //
   const bodyRef = useRef(null)
 
   let opened = true
