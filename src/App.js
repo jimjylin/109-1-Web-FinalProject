@@ -355,9 +355,6 @@ function App() {
     <div className="App">
       <div className="App-title">
         <h1>{state}</h1>
-        <Button type="primary" danger onClick={clearMessages}>
-          Play
-        </Button>
       </div>
       {/* <div className="App-messages">
         {playerNames.length === 0 ? (
@@ -382,8 +379,8 @@ function App() {
       </div> */}
       <div className="App-main">
         <div className="playertableA" >
-          <div className="playertablename">
-            {playerNames[seatNo] === "" ? playerNames[seatNo] : "waiting for player..."}
+          <div className="playertablename" style={{"textDecoration":(alive[seatNo]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
+            {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4] :   (state === "lobby" || state === "waiting for start...") ? "waiting for player...":"0"}
           </div>
           <div>
             <div id="playertableA1" className="playercard">
@@ -397,8 +394,8 @@ function App() {
           </div>
         </div>
         <div className="playertableB" >
-          <div className="playertablename">
-            {playerNames[seatNo] === "" ? playerNames[seatNo] : "waiting for player..."}
+          <div className="playertablename" style={{"textDecoration":(alive[(seatNo+1)%4]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
+            {playerNames[(seatNo+1)%4] !== 0 ? playerNames[(seatNo+1)%4] :   (state === "lobby" || state === "waiting for start...") ? "waiting for player...":0}
           </div>
           <div>
             <div id="playertableB1" className="playercard">
@@ -412,8 +409,8 @@ function App() {
           </div>
         </div>
         <div className="playertableC" >
-          <div className="playertablename">
-            {playerNames[seatNo] === "" ? playerNames[seatNo] : "waiting for player..."}
+          <div className="playertablename" style={{"textDecoration":(alive[(seatNo+2)%4]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
+            {playerNames[(seatNo+2)%4] !== 0 ? playerNames[(seatNo+2)%4] :   (state === "lobby" || state === "waiting for start...") ? "waiting for player...":0}
           </div>
           <div>
             <div id="playertableC1" className="playercard">
@@ -427,8 +424,8 @@ function App() {
           </div>
         </div>
         <div className="playertableD" >
-          <div className="playertablename">
-            {playerNames[seatNo] === "" ? playerNames[seatNo] : "waiting for player..."}
+          <div className="playertablename" style={{"textDecoration":(alive[(seatNo+3)%4]) || state === "lobby" || state === "waiting for start..." ?"":("line-through")}}>
+            {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4] :   (state === "lobby" || state === "waiting for start...") ? "waiting for player...":0}
           </div>
           <div>
             <div id="playertableD1" className="playercard">
@@ -459,56 +456,69 @@ function App() {
         ) : <div/>}      
       </div>
       <Input
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{ marginBottom: 10 }}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              bodyRef.current.focus()
-            }
-          }}
-          disabled={state !== "lobby"}
-        ></Input>
-        <Input.Search
-          rows={4}
-          value={body}
-          ref={bodyRef}
-          style={{ marginBottom: 10 }}
-          enterButton="Send"
-          onChange={(e) => setBody(e.target.value)}
-          placeholder="Type a message here..."
-          onSearch={(msg) => {
-            if (!msg || !username) {
-              displayStatus({
-                type: 'error',
-                msg: 'Please enter a username and a message body.'
-              })
-              return
-            }
+        placeholder="Username"
+        value={username}
+        onChange={(e) => setUsername(e.target.value)}
+        style={{ marginBottom: 10 }}
+        onKeyDown={(e) => {
+          if (e.key === 'Enter') {
+            bodyRef.current.focus()
+          }
+        }}
+        disabled={state !== "lobby"}
+      ></Input>
+      <Input.Search
+        rows={4}
+        value={body}
+        ref={bodyRef}
+        style={{ marginBottom: 10 }}
+        enterButton="Send"
+        onChange={(e) => setBody(e.target.value)}
+        placeholder="Type a message here..."
+        onSearch={(msg) => {
+          if (!msg || !username) {
+            displayStatus({
+              type: 'error',
+              msg: 'Please enter a username and a message body.'
+            })
+            return
+          }
 
-            sendMessage({ name: username, body: msg })
-            setBody('')
-          }}
-        ></Input.Search>
-        <Input
-          value={choose}
-          style={extraInput?{marginBottom: 10 }:{display:"none",marginBottom: 10 }}
-          placeholder="Type the Number of the player here"
-          onChange={(e) => {
-            return setChoose(e.target.value)
-          }}
-        ></Input>
-        <Input
-          value={guessNum}
-          style={guess?{}:{display:"none"}}
-          placeholder="Type a card number here"
-          onChange={(e) => setGuessNum(e.target.value)}
-        >
-        </Input>
+          sendMessage({ name: username, body: msg })
+          setBody('')
+        }}
+      ></Input.Search>
+        
+      <Input
+        value={choose}
+        style={extraInput?{marginBottom: 10 }:{display:"none",marginBottom: 10 }}
+        placeholder="Type the Number of the player here"
+        onChange={(e) => {
+          return setChoose(e.target.value)
+        }}
+      ></Input>
+      <Input
+        value={guessNum}
+        style={guess?{}:{display:"none"}}
+        placeholder="Type a card number here"
+        onChange={(e) => setGuessNum(e.target.value)}
+      >
+      </Input>
+      <div>
         <button onClick={()=>console.log(alive)}>
           aaa
         </button>
+        <Button type="primary" danger onClick={clearMessages}>
+          Play
+        </Button>
+        {state === "lobby" || state === "waiting for start..." ? (
+            <Button type="primary" onClick={() => {sendData(['start'])}}>
+              Start
+            </Button>
+          ) : <div/>
+        }   
+
+      </div>
     </div>
   )
 }
