@@ -3,7 +3,7 @@ const randomSort = require('./randomsort')
 class Deck{
     constructor(random){
         
-        this.deck = random?randomSort([1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8]):[5,6,8,5,1,2,2,3,3,4,4,5,5,6,7,8]
+        this.deck = random?randomSort([1,1,1,1,1,2,2,3,3,4,4,5,5,6,7,8]):[2,2,1,5,1,2,2,3,3,4,4,5,5,6,7,8]
         this.cur = -1
     }
     get draw(){

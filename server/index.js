@@ -10,31 +10,30 @@ const Message = require('./models/message')
 const app = express()
 const server = http.createServer(app)
 const wss = new WebSocket.Server({ server })
-if (!process.env.MONGO_URL) {
-  console.error('Missing MONGO_URL!!!')
-  process.exit(1)
-}
+// if (!process.env.MONGO_URL) {
+//   console.error('Missing MONGO_URL!!!')
+//   process.exit(1)
+// }
 
-mongoose.connect(process.env.MONGO_URL, {
-  useNewUrlParser: true,
-  useUnifiedTopology: true
-})
+// mongoose.connect(process.env.MONGO_URL, {
+//   useNewUrlParser: true,
+//   useUnifiedTopology: true
+// })
 
-const db = mongoose.connection
-
-
+// const db = mongoose.connection
 
 
-db.on('error', (error) => {
-  console.error(error)
-})
-let cur = -1
+
+
+// db.on('error', (error) => {
+//   console.error(error)
+// })
+//let cur = -1
 const table = new Table(0)
 console.log(table.deck)
-let seat = ["","","",""]
-console.log(seat)
+//let seat = ["","","",""]
+//console.log(seat)
 let CLIENTS = []
-let val = 1
 
 wss.on('connection', ws => {
   
@@ -49,73 +48,57 @@ wss.on('connection', ws => {
 
   //console.log(CLIENTS[0] == CLIENTS[1])
   ws.onmessage = (message) => {
-    
+    console.log("socket connected")
     const { data } = message
     
     const [task, payload] = JSON.parse(data)
     switch (task) {
       case 'init': {
+        
         CLIENTS.push(ws)
-        sendData(['seat', seat])
+        console.log(CLIENTS.length)
+        sendData(['seat', table.seat])
         break
       }
       case 'curSeat': {
         //broadcast(JSON.stringify(['seat', seat]))
         //CLIENTS[0].send(JSON.stringify(['seat', seat]))
-        sendData(['seat', seat])
+        sendData(['seat', table.seat])
         // TODO
         break
       }
       case 'sitDown': {
         //console.log(payload)
-        if(seat[payload[0]] === ""){
-          seat[payload[0]] = payload[1]
-          table.addPlayer(ws, payload[1], payload[0])
-          broadcast(['seat', seat])
-          sendData(['sitSuccess', payload[0]])
-        }
-        else{
-          sendData(['error'])
-        }
+        table.sitDown(ws, payload[1], payload[0])
         
         break
       }
       case 'start':{
-        console.log(table.Num)
         table.init()
         
         break
       }
       case 'play':{
         table.play(payload)
-        //console.log('aaa')
-        // if(payload[0] === 1){
-          
-        //   if(table.playerHand(Number(payload[1])) === Number(payload[2])){
-        //     table.lose(Number(payload[1]))
-        //   }
-        //   table.play(1)
-        // }
-        // else if(payload[0] === 1){
-        //   table.play(2)
-        // }
         table.nextRound()
         break
       }
-      default:
+      case 'bye':{
+        console.log("bye")
         break
+      }
+      default:{
+        console.log("wrong")
+        break
+      }
+        
     }
-    table.showHand()
+    //table.showAlive()
+    //table.showHand()
   }
 })
 
-const broadcast = (msg) => {
-  console.log(msg)
-  for (let i=0; i<CLIENTS.length; i++) {
 
-    CLIENTS[i].send(JSON.stringify(msg));
-  } 
-}
 const PORT = process.env.port || 4000
 
 server.listen(PORT, () => {

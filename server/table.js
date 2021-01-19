@@ -6,12 +6,24 @@ class Table{
         this.turn = -1
         this.players = []
         this.tableID = tableID
-        this.deck = new Deck(false)
-        
+        this.deck = new Deck(true)
+        this.seat = ["","","",""]
     }
     get Num(){
-        return this.players.filter((p)=>{return p.live}).length
+        return this.players.filter((p)=>{return p.alive}).length
     }
+    sitDown(client, name, seatNum){
+        if(this.seat[seatNum] === ""){
+            this.seat[seatNum] = name
+            this.addPlayer(client, name, seatNum)
+            this.broadcast(['seat', this.seat])
+            client.send(JSON.stringify(['sitSuccess', seatNum]))
+        }
+        else{
+            client.send(JSON.stringify(['error']))
+        }
+    }
+
     play(payload){
         this.playerByNum(this.turn).invisible = false
         if(payload[0] === 1){
@@ -62,8 +74,11 @@ class Table{
         this.broadcast(['boardUpdate', [this.turn, payload[0]]])
     }
     lose(n){
-        this.playerByNum(n).live = false
+        this.playerByNum(n).alive = false
         this.broadcast(['lose',n])
+    }
+    win(n){
+        this.broadcast(['win',n])
     }
     broadcast(msg){
         for(let i = 0;i<this.players.length;i++){
@@ -90,7 +105,6 @@ class Table{
         return out
     }
     sendByNum(n, msg){
-        console.log(msg)
         this.playerByNum(n).client.send(JSON.stringify(msg))
     }
     drawByNum(n){
@@ -98,6 +112,7 @@ class Table{
         this.sendByNum(n, ['draw', card])
         this.playerByNum(n).draw(card)
     }
+    
     init(){
         const start = Math.floor(Math.random() * this.players.length)
         for (let i=0; i<this.players.length; i++) {
@@ -116,16 +131,31 @@ class Table{
         }
     }
     nextRound(){
-        
-        this.turn = (this.turn + 1)%4
-        while(this.playerByNum(this.turn) === undefined || !this.playerByNum(this.turn).live){
-            this.turn = (this.turn + 1)%4
+        //console.log(this.players.filter(i=>i.alive))
+        //console.log(this.players[0].alive,this.players[1].alive)
+        if(this.players.filter((i)=>i.alive).length === 1){
+            console.log('aaa')
+            this.win(this.players.filter((i)=>i.alive)[0].seatNum)
         }
+        else if(this.deck.cur === 15){
+            this.battle()
+        }
+        else{
+            this.turn = (this.turn + 1)%4
+            while(this.playerByNum(this.turn) === undefined || !this.playerByNum(this.turn).alive){
+                this.turn = (this.turn + 1)%4
+            }
 
-        this.drawByNum(this.turn)
-        this.broadcast(['turn', this.turn])
+            this.drawByNum(this.turn)
+            this.broadcast(['turn', this.turn])
+        }
+        
     }
-    
+    showAlive(){
+        for (let i=0; i<this.players.length; i++) {
+            console.log(this.players[i].name, this.players[i].alive)
+        }
+    }
     addPlayer(client, name, seatNum){
         this.players.push(new Player(client, name, seatNum))
     }

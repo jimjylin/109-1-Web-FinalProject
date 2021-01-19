@@ -3,12 +3,12 @@ import React, { useEffect, useRef, useState } from 'react'
 //import useChat from './useChat'
 import { Button, Input, message, Tag } from 'antd'
 import {
-  CheckCircleOutlined,
+  //CheckCircleOutlined,
   SyncOutlined,
-  CloseCircleOutlined,
-  ExclamationCircleOutlined,
-  ClockCircleOutlined,
-  MinusCircleOutlined,
+  // CloseCircleOutlined,
+  // ExclamationCircleOutlined,
+  // ClockCircleOutlined,
+  // MinusCircleOutlined,
 } from '@ant-design/icons';
 const client = new WebSocket('ws://localhost:4000')
 
@@ -29,14 +29,28 @@ function App() {
   const [seatNo, setseatNo] = useState(-1)
   const [turn, setTurn] = useState(-1)               //
   const bodyRef = useRef(null)
+  // useEffect(()=>{
+    
+  // })
+  window.onunload = ()=>{
+    sendData(['bye'])
+    return "bye"
+  }
 
   let opened = true
   const sendData = (data) => {
     client.send(JSON.stringify(data))
   }
   const sendMessage = ({ name, body })=>{
+    
     if(body === 'start'){
       sendData(['start'])
+    }
+    else if(state !== "lobby"){
+      if(body === '')
+        displayStatus({type: 'error', msg: 'please choose a card to play'})
+      else if(!isNaN(Number(body)) && turn === seatNo)
+        playcard(Number(body))
     }
     else{
       sendData(['sitDown', [Number(body), name]])
@@ -47,7 +61,7 @@ function App() {
     if(body === '')
       displayStatus({type: 'error', msg: 'please choose a card to play'})
 
-    else if(Number(body)!==NaN && turn === seatNo)
+    else if(!isNaN(Number(body)) && turn === seatNo)
       playcard(Number(body))
 
   }
@@ -234,7 +248,19 @@ function App() {
         setHand(() => [...hand, payload])
         break
       }
-      
+      case 'win':{
+        
+        if(payload === seatNo){
+          //console.log('aaaaa')
+          setState('Your Win!')
+        }
+        else{
+          setState('Player'+String(payload)+' Won!!')
+        }
+        
+        
+        break
+      }
       case 'lose':{
         
         if(payload === seatNo){
@@ -280,7 +306,7 @@ function App() {
       const { type, msg } = s
       const content = {
         content: msg,
-        duration: 0.5
+        duration: 2
       }
 
       switch (type) {
@@ -516,7 +542,7 @@ function App() {
               <Tag 
                 color={username===v?"green":"blue"} 
                 icon={turn===i?(<SyncOutlined spin />):""}
-                style={{"text-decoration":(alive[i])?"":("line-through")}}
+                style={{"textDecoration":(alive[i])?"":("line-through")}}
               >{v}</Tag>
               {board[i].toString()}
             </p>
@@ -536,6 +562,7 @@ function App() {
             bodyRef.current.focus()
           }
         }}
+        disabled={state !== "lobby"}
       ></Input>
       <Input.Search
         rows={4}
@@ -574,7 +601,7 @@ function App() {
         onChange={(e) => setGuessNum(e.target.value)}
       >
       </Input>
-      <button onClick={()=>console.log(board)}>
+      <button onClick={()=>console.log(alive)}>
         aaa
       </button>
     </div>

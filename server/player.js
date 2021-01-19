@@ -5,7 +5,7 @@ class Player{
         this.name = name
         this.seatNum = seatNum
         this.hand = []
-        this.live = true
+        this.alive = true
         this.invisible = false
     }
     play(n){
@@ -29,7 +29,6 @@ class Player{
     discard(){
         this.hand.pop()
         this.client.send(JSON.stringify(['discard']))
-        console.log(this.hand)
     }
     
     
