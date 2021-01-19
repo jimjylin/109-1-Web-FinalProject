@@ -383,9 +383,9 @@ function App() {
             {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4] :   (state === "lobby" || state === "waiting for start...") ? "waiting for player...":"0"}
           </div>
           <div>
-            <div id="playertableA1" className="playercard">
-              <button style={{"backgroundImage" :"./images/1.jpg" }}>                    
-              </button>
+            <div id="playertableA1" className="playercard" style={{"backgroundImage" : "url(images/1.jpg)" }}>
+              <Button >                    
+              </Button>
             </div>
             <div id="playertableA2" className="playercard" >
               <div className="cardcontent cardtype_1" id="2">                            

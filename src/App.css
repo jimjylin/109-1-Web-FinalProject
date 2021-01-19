@@ -8,6 +8,11 @@
   margin: auto;
 }
 
+.App-main {
+	display: flex;
+
+}
+
 .App-title {
   display: flex;
   align-items: center;
@@ -32,7 +37,8 @@
 
 	width: 75px; 
 	height: 100px; 
-	background-image: "./images/1.jpg"; 
+	background-image: url("images/2.jpg");
+	background-size: contain; 
 	opacity: 1;
 	float: left;
 }
@@ -47,17 +53,17 @@
 	position:absolute;
 	top: 60%;
 	left: 43%;
-	height: 100px; 
+	height: 120px; 
 	width: 150px;
-	background-color: darkcyan;
+	/* background-color: darkcyan; */
 	/* background-position:0vw ; */
 }
 
 .playertableB {
 	position:absolute;
 	top: 37%;
-	left: 61%;
-	height: 100px; 
+	left: 59%;
+	height: 120px; 
 	width: 150px;
 	background-color: rgb(216, 97, 0);
 	/* background-position:0vw ; */
@@ -67,7 +73,7 @@
 	position:absolute;
 	top: 14%;
 	left: 43%;
-	height: 100px; 
+	height: 120px; 
 	width: 150px;
 	background-color: rgb(65, 34, 204);
 	/* background-position:0vw ; */
@@ -76,8 +82,8 @@
 .playertableD {
 	position:absolute;
 	top: 37%;
-	left: 25%;
-	height: 100px; 
+	left: 27%;
+	height: 120px; 
 	width: 150px;
 	background-color: rgb(139, 214, 42);
 	/* background-position:0vw ; */
@@ -85,29 +91,45 @@
 
 .tablecenter {
 	position: absolute;
-	top: 35%;
-	left: 41.5%;
+	top: 37%;
+	left: 43%;
 	height: 120px; 
-	width: 180px;
+	width: 150px;
 	background-color: rgb(211, 18, 18);
 }
 
 .discardpile {
-	height: 120px; 
-	width: 90px;
 	float: left;
 }
 
+.cardlastplayed {
+	background-image: url("images/2.jpg");
+	background-size: contain; 
+	height: 100px; 
+	width: 75px;
+
+}
+
 .deck {
-	height: 120px; 
-	width: 90px;
 	float: left;
+}
+
+.deckcard {
+	height: 100px; 
+	width: 75px;
+	background-image: url("images/2.jpg");
+	background-size: contain; 
+
 }
 
 .lastplayed {
 	text-align: center;
+	font-size: xx-small;
+	height: 20px;
 }
 
 .cardremaining {
+	height: 20px;
 	text-align: center;
+	font-size: xx-small;
 }
