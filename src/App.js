@@ -357,27 +357,6 @@ function App() {
       <div className="App-title">
         <h1>{state}</h1>
       </div>
-      {/* <div className="App-messages">
-        {playerNames.length === 0 ? (
-          <p style={{ color: '#ccc' }}>
-            {opened? 'No messages...' : 'Loading...'}
-          </p>
-        ) : (
-          playerNames.map((v, i) => (
-            <p className="App-message" key={i}>
-              <Tag 
-                color={username===v?"green":"blue"} 
-                icon={turn===i?(<SyncOutlined spin />):""}
-                style={{"textDecoration":(alive[i])?"":("line-through")}}
-              >{v}</Tag>
-              {board[i].toString()}
-            </p>
-          ))
-        )}
-      </div>
-      <div>
-        {hand}
-      </div> */}
       <div className="App-main">
         <div className="playertableA" >
           <div className="playertablename" style={{"textDecoration":(alive[seatNo]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
@@ -411,7 +390,7 @@ function App() {
         </div>
         <div className="playertableC" >
           <div className="playertablename" style={{"textDecoration":(alive[(seatNo+2)%4]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
-            {playerNames[(seatNo+2)%4] !== 0 ? playerNames[(seatNo+2)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
+            {playerNames[(seatNo+2)%4] !== 0 ? playerNames[(seatNo+2)%4] : (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
             <div id="playertableC1" className="playercard" style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+2)%4] ? "none" : `url(${cards[0]})`}}>
@@ -456,18 +435,21 @@ function App() {
           </div>
         ) : <div/>}      
       </div>
-      <Input
-        placeholder="Username"
-        value={username}
-        onChange={(e) => setUsername(e.target.value)}
-        style={{ marginBottom: 10, opacity: state === "lobby" || state === "waiting for start..." ? 1 : 0}}
-        onKeyDown={(e) => {
-          if (e.key === 'Enter') {
-            bodyRef.current.focus()
-          }
-        }}
-        disabled={state !== "lobby"}
-      ></Input>
+      
+      {state === "lobby" || state === "waiting for start..." ? (<Input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{ marginBottom: 10 }}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              bodyRef.current.focus()
+            }
+          }}
+          disabled={state !== "lobby"}
+        ></Input>
+        ) : <div/> 
+      }
       <Input.Search
         rows={4}
         value={body}
