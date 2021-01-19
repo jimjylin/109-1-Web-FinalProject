@@ -439,7 +439,7 @@ function App() {
             </div>
           </div>
         </div>
-        {state === "wait" || state === "Your turn!!" || 1? (
+        {state === "wait" || state === "Your turn!!" ? (
           <div className="tablecenter">
             <div className="discardpile">
               <div className="lastplayed">Last played</div>
