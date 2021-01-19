@@ -381,7 +381,7 @@ function App() {
       <div className="App-main">
         <div className="playertableA" >
           <div className="playertablename" style={{"textDecoration":(alive[seatNo]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
-            {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4] :   (state === "lobby" || state === "waiting for start...") ? "waiting for player...":"0"}
+            {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
             <div id="playertableA1" className="playercard" style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || !alive[seatNo]?"none":`url(${cards[hand[0]]})`}}>
@@ -396,7 +396,7 @@ function App() {
         </div>
         <div className="playertableB" >
           <div className="playertablename"  style={{"textDecoration":(alive[(seatNo+1)%4]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
-            {playerNames[(seatNo+1)%4] !== 0 ? playerNames[(seatNo+1)%4] :   (state === "lobby" || state === "waiting for start...") ? "waiting for player...":0}
+            {playerNames[(seatNo+1)%4] !== 0 ? playerNames[(seatNo+1)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
             <div id="playertableB1" className="playercard" style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+1)%4] ? "none" : `url(${cards[0]})`}}>
@@ -411,7 +411,7 @@ function App() {
         </div>
         <div className="playertableC" >
           <div className="playertablename" style={{"textDecoration":(alive[(seatNo+2)%4]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
-            {playerNames[(seatNo+2)%4] !== 0 ? playerNames[(seatNo+2)%4] :   (state === "lobby" || state === "waiting for start...") ? "waiting for player...":0}
+            {playerNames[(seatNo+2)%4] !== 0 ? playerNames[(seatNo+2)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
             <div id="playertableC1" className="playercard" style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+2)%4] ? "none" : `url(${cards[0]})`}}>
@@ -426,7 +426,7 @@ function App() {
         </div>
         <div className="playertableD" >
           <div className="playertablename" style={{"textDecoration":(alive[(seatNo+3)%4]) || state === "lobby" || state === "waiting for start..." ?"":("line-through")}}>
-            {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4] :   (state === "lobby" || state === "waiting for start...") ? "waiting for player...":0}
+            {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)" : ""}
           </div>
           <div>
             <div id="playertableD1" className="playercard" style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+3)%4] ? "none" : `url(${cards[0]})`}}>
@@ -460,7 +460,7 @@ function App() {
         placeholder="Username"
         value={username}
         onChange={(e) => setUsername(e.target.value)}
-        style={{ marginBottom: 10 }}
+        style={{ marginBottom: 10, opacity: state === "lobby" || state === "waiting for start..." ? 1 : 0}}
         onKeyDown={(e) => {
           if (e.key === 'Enter') {
             bodyRef.current.focus()
