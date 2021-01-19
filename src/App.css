@@ -28,6 +28,21 @@
 	margin: auto;
 }
 
+.playercard {
+
+	width: 75px; 
+	height: 100px; 
+	background-image: "./images/1.jpg"; 
+	opacity: 1;
+	float: left;
+}
+
+.playertablename {
+	height: 20px;
+	text-align: center;
+	font-size: xx-small ;
+}
+
 .playertableA {
 	position:absolute;
 	top: 60%;
@@ -87,4 +102,12 @@
 	height: 120px; 
 	width: 90px;
 	float: left;
+}
+
+.lastplayed {
+	text-align: center;
+}
+
+.cardremaining {
+	text-align: center;
 }

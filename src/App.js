@@ -384,8 +384,8 @@ function App() {
           </div>
           <div>
             <div id="playertableA1" className="playercard">
-              <div className="cardcontent cardtype_1" id="1">                            
-              </div>
+              <button style={{"backgroundImage" :"./images/1.jpg" }}>                    
+              </button>
             </div>
             <div id="playertableA2" className="playercard" >
               <div className="cardcontent cardtype_1" id="2">                            
