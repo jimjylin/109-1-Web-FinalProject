@@ -10,6 +10,9 @@ class Deck{
         this.cur = this.cur + 1
         return this.deck[this.cur]
     }
+    get num(){
+        return 15 - this.cur
+    }
     set setDeck(newDeck){
         this.deck = newDeck
     }

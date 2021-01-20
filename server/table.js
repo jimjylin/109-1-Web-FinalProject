@@ -149,6 +149,7 @@ class Table{
             this.drawByNum(this.turn)
             this.broadcast(['turn', this.turn])
         }
+        this.broadcast(['deckNum', this.deck.num])
         
     }
     showAlive(){
