@@ -515,7 +515,7 @@ function App() {
           onChange={(e) => {
             setChoose(playerNames.indexOf(e))
           }}>
-          {playerNames.filter((player)=>{return (player !== 0 && player !== username)}).map((player, i) =>(
+          {playerNames.filter((player)=>{return (player !== 0 && player !== username && alive[playerNames.indexOf(player)])}).map((player, i) =>(
             <Option className="option" value={player}>
               {player}
             </Option>
