@@ -472,6 +472,7 @@ function App() {
       
       <div style={state === "lobby" || state === "waiting for start..." ?{}:{display:"none"}}>
         <Input
+        className="input"
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
@@ -484,6 +485,7 @@ function App() {
           disabled={state !== "lobby"}
         ></Input>
         <Input.Search
+          className="input"
           rows={4}
           value={body}
           ref={bodyRef}
@@ -514,7 +516,7 @@ function App() {
             setChoose(playerNames.indexOf(e))
           }}>
           {playerNames.filter((player)=>{return (player !== 0 && player !== username)}).map((player, i) =>(
-            <Option value={player}>
+            <Option className="option" value={player}>
               {player}
             </Option>
           ))}
@@ -525,24 +527,24 @@ function App() {
           style={guess?{width: 180}:{display:"none"}}
           onChange={(e) => setGuessNum(e)}  
         >
-            <Option value="2"> 2 </Option>
-            <Option value="3"> 3 </Option>
-            <Option value="4"> 4 </Option>
-            <Option value="5"> 5 </Option>
-            <Option value="6"> 6 </Option>
-            <Option value="7"> 7 </Option>
-            <Option value="8"> 8 </Option>
+            <Option className="option" value="2"> 2 </Option>
+            <Option className="option" value="3"> 3 </Option>
+            <Option className="option" value="4"> 4 </Option>
+            <Option className="option" value="5"> 5 </Option>
+            <Option className="option" value="6"> 6 </Option>
+            <Option className="option" value="7"> 7 </Option>
+            <Option className="option" value="8"> 8 </Option>
         </Select>
       </div> 
       <div>
-        <button onClick={()=>console.log(choose, guessNum, alive)}>
+        <button className="button" onClick={()=>console.log(choose, guessNum, alive)}>
           aaa
         </button>
 
-        <Button type="primary" onClick={() => {sendData(['start'])}} style={state === "waiting for start..."?{}:{display:"none"}}>
+        <Button className="button" type="primary" onClick={() => {sendData(['start'])}} style={state === "waiting for start..."?{}:{display:"none"}}>
           Start
         </Button>
-        <Button type="primary" danger onClick={clearMessages} style={state === "Your turn!!" ?{}:{display:"none"}}>
+        <Button className="button" type="primary" danger onClick={clearMessages} style={state === "Your turn!!" ?{}:{display:"none"}}>
           Play
         </Button>
             
