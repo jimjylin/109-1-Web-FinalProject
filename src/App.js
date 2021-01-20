@@ -386,7 +386,7 @@ function App() {
           </div>
         </div>
         <div className="playertableB" >
-          <div className="playertablename"  style={{"textDecoration":(alive[(seatNo+2)%4]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
+          <div className="playertablename"  style={{"textDecoration":(alive[(seatNo+1)%4]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
             {playerNames[(seatNo+1)%4] !== 0 ? playerNames[(seatNo+1)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
@@ -486,32 +486,33 @@ function App() {
           }}
         ></Input.Search>
       </div>
-      
-      <Select 
-        placeholder="Select a player" 
-        style={extraInput?{ width: 120 }:{ display:"none" }}
-        onChange={(e) => {
-          setChoose(playerNames.indexOf(e))
-        }}>
-        {playerNames.filter((player)=>{return (player !== 0 && player !== username)}).map((player, i) =>(
-          <Option value={player}>
-            {player}
-          </Option>
-        ))}
-      </Select>
-      <Select
-        placeholder="Select a card number to guess" 
-        style={guess?{width: 120}:{display:"none"}}
-        onChange={(e) => setGuessNum(e)}  
-      >
-          <Option value="2"> 2 </Option>
-          <Option value="3"> 3 </Option>
-          <Option value="4"> 4 </Option>
-          <Option value="5"> 5 </Option>
-          <Option value="6"> 6 </Option>
-          <Option value="7"> 7 </Option>
-          <Option value="8"> 8 </Option>
-      </Select> 
+      <div>
+        <Select 
+          placeholder="Select a player" 
+          style={extraInput?{ width: 180 }:{ display:"none" }}
+          onChange={(e) => {
+            setChoose(playerNames.indexOf(e))
+          }}>
+          {playerNames.filter((player)=>{return (player !== 0 && player !== username)}).map((player, i) =>(
+            <Option value={player}>
+              {player}
+            </Option>
+          ))}
+        </Select>
+        <Select
+          placeholder="Select a card number" 
+          style={guess?{width: 180}:{display:"none"}}
+          onChange={(e) => setGuessNum(e)}  
+        >
+            <Option value="2"> 2 </Option>
+            <Option value="3"> 3 </Option>
+            <Option value="4"> 4 </Option>
+            <Option value="5"> 5 </Option>
+            <Option value="6"> 6 </Option>
+            <Option value="7"> 7 </Option>
+            <Option value="8"> 8 </Option>
+        </Select>
+      </div> 
       <div>
         <button onClick={()=>console.log(choose, guessNum, alive)}>
           aaa
