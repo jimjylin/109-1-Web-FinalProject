@@ -375,13 +375,13 @@ function App() {
               id="playertableA1" 
               className="playercardA" 
               onClick={state === "Your turn!!"?() =>{setBody(0)}:""} 
-              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "1px solid rgb(38, 255, 9)" : ""}}>
+              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "3px groove red":"" }}>
             </div>
             <div 
               id="playertableA2" 
               className="playercardA" 
               onClick={state === "Your turn!!"?() =>{setBody(1)}:""} 
-              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== seatNo ? "none" : `url(${cards[hand[1]]})`, border: body === 1 ? "1px solid rgb(38, 255, 9)" : "" }}>
+              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== seatNo ? "none":`url(${cards[hand[1]]})`,  border: body === 1 ? "3px groove white":"" }}>
             </div>
           </div>
         </div>
