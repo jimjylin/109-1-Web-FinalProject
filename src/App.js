@@ -5,6 +5,7 @@ import { Button, Input, message, Tag ,Select } from 'antd'
 import {
   CheckCircleOutlined,
   SyncOutlined,
+  UserAddOutlined
   // CloseCircleOutlined,
   // ExclamationCircleOutlined,
   // ClockCircleOutlined,
@@ -31,6 +32,8 @@ function App() {
   const [turn, setTurn] = useState(-1)
   const [deckNum, setDeckNum] = useState(16)
   const bodyRef = useRef(null)
+  const [start, setStart] = useState(false)
+
   // useEffect(()=>{
     
   // })
@@ -38,14 +41,14 @@ function App() {
     sendData(['bye'])
     return "bye"
   }
-
-  let opened = true
+  
   const sendData = (data) => {
     client.send(JSON.stringify(data))
   }
   const sendMessage = ({ name, body })=>{
     
     if(body === 'start'){
+      setStart(true)
       sendData(['start'])
     }
     else if(state !== "lobby"){
@@ -54,13 +57,24 @@ function App() {
       else if(!isNaN(Number(body)) && turn === seatNo)
         playcard(Number(body))
     }
-    else{
-      sendData(['sitDown', [Number(body), name]])
-    }
+    
       
   }
-  const clearMessages = ()=>{
-    if(body === '')
+  const sit = ()=>{
+    if(username === ''){
+      displayStatus({type: 'error', msg: 'Username can\'t be empty'})
+    }
+    else{
+      for(let i = 0;i<playerNames.length;i++){
+        if(playerNames[i] === 0){
+          sendData(['sitDown', [i, username]])
+          break
+        }
+      }
+    }
+  }
+  const play = ()=>{
+    if(body !== 1 && body !== 0)
       displayStatus({type: 'error', msg: 'please choose a card to play'})
 
     else if(!isNaN(Number(body)) && turn === seatNo)
@@ -216,10 +230,15 @@ function App() {
   client.onmessage = (message) => {
     const { data } = message
     const [task, payload] = JSON.parse(data)
-    //console.log(payload)
+    console.log(task)
     switch (task) {
       case 'status':{
         setStatus(payload)
+        break
+      }
+      case 'reset':{
+        reset()
+        console.log("reset success")
         break
       }
       case 'seat':{
@@ -240,6 +259,7 @@ function App() {
       }
       case 'turn':{
         console.log(state)
+        setStart(true)
         if(payload === seatNo) setState('Your turn!!')
         else if(alive[seatNo]) setState('wait')
         setInvisible((prev)=>
@@ -304,11 +324,25 @@ function App() {
         break
     }
   }
-  const disPlayer = (n) => {
-    if(state === "lobby" || state === "waiting for start..." || !alive[n] ){
-      return false;
-    }
-    return true;
+  const reset = ()=>{
+    
+    setBoard([[],[],[],[]])
+    setInvisible([])
+    setAlive([])          
+    setGuessNum('')        
+    setGuess(false)
+    setChoose('')
+    setExtraInput(false) 
+    setStatus({})
+    setState('lobby')  
+    setPlayerNames([0,0,0,0])
+    setHand([])               
+    setUsername('')      
+    setBody('')               
+    setseatNo(-1)
+    setTurn(-1)
+    setDeckNum(16)
+    setStart(false)
   }
   const displayStatus = (s) => {
     if (s.msg) {
@@ -375,16 +409,18 @@ function App() {
             {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
+            
             <div 
               id="playertableA1" 
               className="playercardA" 
-              onClick={state === "Your turn!!"?() =>{setBody(0)}:""} 
+              onClick={state === "Your turn!!"?() =>{setBody(0)}:()=>{}} 
               style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "3px groove white":"" }}>
             </div>
+            
             <div 
               id="playertableA2" 
               className="playercardA" 
-              onClick={state === "Your turn!!"?() =>{setBody(1)}:""} 
+              onClick={state === "Your turn!!"?() =>{setBody(0)}:()=>{}} 
               style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== seatNo ? "none":`url(${cards[hand[1]]})`,  border: body === 1 ? "3px groove white":"" }}>
             </div>
           </div>
@@ -399,6 +435,7 @@ function App() {
             {playerNames[(seatNo+1)%4] !== 0 ? playerNames[(seatNo+1)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
+            
             <div 
               id="playertableB1" 
               className="playercard" 
@@ -421,6 +458,7 @@ function App() {
             {playerNames[(seatNo+2)%4] !== 0 ? playerNames[(seatNo+2)%4] : (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
+            
             <div 
               id="playertableC1" 
               className="playercard" 
@@ -443,6 +481,7 @@ function App() {
             {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4] :  ((state === "lobby" || state === "waiting for start...") ? "(waiting for player...)" : "")}
           </div>
           <div>
+            
             <div id="playertableD1" 
               className="playercard" 
               style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+3)%4] ? "none" : `url(${cards[0]})`}}>
@@ -453,7 +492,11 @@ function App() {
             </div>
           </div>
         </div>
+        <div style={{"background-color":"white", "display":(start?"none":"")}}>
+          <Button id="sitButton" type="primary" shape="circle" icon={<UserAddOutlined />} size={"large"} onClick={sit}/>
 
+        </div>
+        
         <div className="tablecenter" style={state === "wait" || state === "Your turn!!"?{}:{display:"none"}}>
           <div className="discardpile">
             <div className="lastplayed">Last played</div>
@@ -489,7 +532,7 @@ function App() {
           rows={4}
           value={body}
           ref={bodyRef}
-          style={{ marginBottom: 10 }}
+          style={{ marginBottom: 10 ,display:"none"}}
           enterButton="Send"
           onChange={(e) => setBody(e.target.value)}
           placeholder="Type a message here..."
@@ -537,17 +580,19 @@ function App() {
         </Select>
       </div> 
       <div>
-        <button className="button" onClick={()=>console.log(choose, guessNum, alive)}>
+        <button className="button" onClick={()=>console.log(turn, seatNo)}>
           aaa
         </button>
-
-        <Button className="button" type="primary" onClick={() => {sendData(['start'])}} style={state === "waiting for start..."?{}:{display:"none"}}>
+        <button className="button" onClick={()=>{sendData(['reset'])}} style={{display:(seatNo===-1?"none":"")}}>
+          reset
+        </button>
+        <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={state === "waiting for start..."?{}:{display:"none"}}>
           Start
         </Button>
-        <Button className="button" type="primary" danger onClick={clearMessages} style={state === "Your turn!!" ?{}:{display:"none"}}>
+        <Button className="button" type="primary" danger onClick={play} style={state === "Your turn!!" ?{}:{display:"none"}}>
           Play
         </Button>
-            
+        
               
       </div>
     </div>

@@ -34,7 +34,11 @@ console.log(table.deck)
 //let seat = ["","","",""]
 //console.log(seat)
 let CLIENTS = []
-
+const broadcast = (msg)=>{
+  for(let i = 0;i<CLIENTS.length;i++){
+    CLIENTS[i].send(JSON.stringify(msg))
+  }
+}
 wss.on('connection', ws => {
   
   const sendData = (data) => {
@@ -57,13 +61,14 @@ wss.on('connection', ws => {
         CLIENTS.push(ws)
         console.log(CLIENTS.length)
         sendData(['seat', table.seat])
+        
         break
       }
 
       case 'sitDown': {
         //console.log(payload)
         table.sitDown(ws, payload[1], payload[0])
-        
+        broadcast(['seat', table.seat])
         break
       }
       case 'start':{
@@ -83,6 +88,11 @@ wss.on('connection', ws => {
         if (index > -1) {
           CLIENTS.splice(index, 1);
         }
+        break
+      }
+      case 'reset':{
+        console.log("reset")
+        table.reset()
         break
       }
       default:{

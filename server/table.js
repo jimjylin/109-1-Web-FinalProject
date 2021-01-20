@@ -9,6 +9,15 @@ class Table{
         this.deck = new Deck(true)
         this.seat = ["","","",""]
     }
+    reset(){
+        this.broadcast(['reset'])
+        this.turn = -1
+        this.players = []
+        this.deck.reset()
+        this.seat = ["","","",""]
+        
+        console.log("table reset")
+    }
     get Num(){
         return this.players.filter((p)=>{return p.alive}).length
     }
@@ -123,6 +132,8 @@ class Table{
         //this.sendByNum(this.players[start].seatNum, ['yourTurn'])
         this.drawByNum(this.players[start].seatNum)
         this.broadcast(['turn', this.turn])
+        this.broadcast(['deckNum', this.deck.num])
+        //this.broadcast(['start', this.deck.num])
         //this.showHand()
     }
     showHand(){
@@ -149,6 +160,7 @@ class Table{
             this.drawByNum(this.turn)
             this.broadcast(['turn', this.turn])
         }
+        console.log(this.deck.num)
         this.broadcast(['deckNum', this.deck.num])
         
     }
