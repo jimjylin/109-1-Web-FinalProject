@@ -472,7 +472,7 @@ function App() {
             }}
           ></Input.Search>
         </div>
-      : {}
+      : <div/>
       }
       <Input
         value={choose}
@@ -493,16 +493,19 @@ function App() {
         <button onClick={()=>console.log(alive)}>
           aaa
         </button>
-        <Button type="primary" danger onClick={clearMessages}>
-          Play
-        </Button>
-        {state === "lobby" || state === "waiting for start..." ? (
+        { state === "waiting for start..." ? 
             <Button type="primary" onClick={() => {sendData(['start'])}}>
               Start
             </Button>
-          ) : {}
+            : <div/>
         }   
-
+        { state === "Your turn!!" ? 
+            <Button type="primary" danger onClick={clearMessages} >
+              Play
+            </Button>
+            : <div/>
+        }   
+              
       </div>
     </div>
   )
