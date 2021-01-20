@@ -363,11 +363,11 @@ function App() {
             {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
-            <div id="playertableA1" className="playercard" style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || !alive[seatNo]?"none":`url(${cards[hand[0]]})`}}>
+            <div id="playertableA1" className="playercard" onClick={() =>{setBody(0)}} style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || !alive[seatNo]?"none":`url(${cards[hand[0]]})`}}>
               <Button >                    
               </Button>
             </div>
-            <div id="playertableA2" className="playercard" style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== seatNo ? "none" : `url(${cards[hand[1]]})` }}>
+            <div id="playertableA2" className="playercard" onClick={() =>{setBody(1)}} style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== seatNo ? "none" : `url(${cards[hand[1]]})` }}>
               <div className="cardcontent cardtype_1" id="2">                            
               </div>
             </div>
