@@ -6,6 +6,9 @@
   height: 100vh;
   width: 500px;
   margin: auto;
+  background-image: url("./img/background1.jpg");
+  background-size: contain;
+  opacity: 1;
 }
 
 .App-main {
@@ -23,6 +26,8 @@
   margin: 0;
   margin-right: 20px;
   font-size: 3em;
+  color: antiquewhite;
+
 }
 
 .App-main {
@@ -61,6 +66,10 @@
 	height: 20px;
 	text-align: center;
 	font-size: xx-small ;
+	font-style: oblique;
+	color: black;
+	background-image: url("./img/parchment.jpg");
+	background-size:cover;
 }
 
 .playertableA {
@@ -69,7 +78,7 @@
 	left: 43%;
 	height: 120px; 
 	width: 150px;
-	background-color: darkcyan;
+	/* background-color: darkcyan; */
 	/* background-position:0vw ; */
 }
 
@@ -79,7 +88,7 @@
 	left: 59%;
 	height: 120px; 
 	width: 150px;
-	background-color: rgb(216, 97, 0);
+	/* background-color: rgb(216, 97, 0); */
 	/* background-position:0vw ; */
 }
 
@@ -89,7 +98,7 @@
 	left: 43%;
 	height: 120px; 
 	width: 150px;
-	background-color: rgb(65, 34, 204);
+	/* background-color: rgb(65, 34, 204); */
 	/* background-position:0vw ; */
 }
 
@@ -99,7 +108,7 @@
 	left: 27%;
 	height: 120px; 
 	width: 150px;
-	background-color: rgb(139, 214, 42);
+	/* background-color: rgb(139, 214, 42); */
 	/* background-position:0vw ; */
 }
 
@@ -109,7 +118,7 @@
 	left: 43%;
 	height: 120px; 
 	width: 150px;
-	background-color: rgb(211, 18, 18);
+	/* background-color: rgb(211, 18, 18); */
 }
 
 .discardpile {
