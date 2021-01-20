@@ -9,7 +9,7 @@
   background-image: url("./img/background2.jpg");
   background-size: contain;
   opacity: 1;
-  border-radius: 25px;
+  /* border-radius: 25px; */
 }
 
 .App-main {
@@ -28,6 +28,7 @@
   margin-right: 20px;
   font-size: 3em;
   color: antiquewhite;
+  font-family: Impact, Haettenschweiler, 'Arial Narrow Bold', sans-serif;
 
 }
 
@@ -73,10 +74,12 @@
 	height: 20px;
 	text-align: center;
 	font-size: xx-small ;
-	font-style: oblique;
-	color: black;
-	background-image: url("./img/parchment.jpg");
+	font-style: normal ;
+	font-family: fantasy ;
+	color: rgb(65, 28, 28);
+	/* background-image: url("./img/parchment.jpg"); */
 	background-size:cover;
+	border-radius: 3px;
 }
 
 .playertableA {
@@ -142,6 +145,7 @@
 
 .deck {
 	float: left;
+
 }
 
 .deckcard {
@@ -156,10 +160,25 @@
 	text-align: center;
 	font-size: xx-small;
 	height: 20px;
+	background-image: url("./img/parchment.jpg");
+	border-radius: 3px;
+	font-style: normal ;
+	font-family: fantasy ;
+	color: rgb(65, 28, 28);
 }
 
 .cardremaining {
 	height: 20px;
 	text-align: center;
 	font-size: xx-small;
+	background-image: url("./img/parchment.jpg");
+	border-radius: 3px;
+	font-style: normal ;
+	font-family: fantasy ;
+	color: rgb(65, 28, 28);
 }
+
+.select {
+	background-color: rgb(236, 131, 131);
+}
+

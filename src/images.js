@@ -8,6 +8,7 @@ import card7 from './img/7.jpg';
 import card8 from './img/8.jpg';
 import back from './img/back.jpg';
 import background from './img/background.jpg';
+import parchment from './img/parchment.jpg';
 export default [
   back,
   card1,
@@ -18,6 +19,6 @@ export default [
   card6,
   card7,
   card8,
-  background
+  parchment
   
 ];
