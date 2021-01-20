@@ -184,16 +184,17 @@
 
 }
 
+.option {
+	font-family: fantasy ;
+}
+
 .input {
 	background-color: rgb(236, 131, 131);
 	font-family: fantasy ;
 }
 
-.option {
-	font-family: fantasy ;
-}
-
 .button {
+	color: bisque;
 	background-color: rgb(236, 131, 131);
 	font-family: fantasy ;
 
