@@ -43,6 +43,20 @@
 	float: left;
 }
 
+.playercardA {
+
+	width: 75px; 
+	height: 100px; 
+	background-image: url("img/back.jpg");
+	background-size: contain; 
+	/* border: 1px solid rgb(38, 255, 9); */
+	opacity: 1;
+	float: left;
+}
+.playercardA:hover {
+	opacity: 0.9;	
+}
+
 .playertablename {
 	height: 20px;
 	text-align: center;

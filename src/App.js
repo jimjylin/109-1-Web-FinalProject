@@ -363,11 +363,11 @@ function App() {
             {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
-            <div id="playertableA1" className="playercard" onClick={() =>{setBody(0)}} style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || !alive[seatNo]?"none":`url(${cards[hand[0]]})`}}>
+            <div id="playertableA1" className="playercardA" onClick={state === "Your turn!!"?() =>{setBody(0)}:""} style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "1px solid rgb(38, 255, 9)" : ""}}>
               <Button >                    
               </Button>
             </div>
-            <div id="playertableA2" className="playercard" onClick={() =>{setBody(1)}} style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== seatNo ? "none" : `url(${cards[hand[1]]})` }}>
+            <div id="playertableA2" className="playercardA" onClick={state === "Your turn!!"?() =>{setBody(1)}:""} style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== seatNo ? "none" : `url(${cards[hand[1]]})`, border: body === 1 ? "1px solid rgb(38, 255, 9)" : "" }}>
               <div className="cardcontent cardtype_1" id="2">                            
               </div>
             </div>
@@ -440,38 +440,37 @@ function App() {
           placeholder="Username"
           value={username}
           onChange={(e) => setUsername(e.target.value)}
-          style={{ marginBottom: 10 }}
+          style={{ marginBottom: 10}}
           onKeyDown={(e) => {
             if (e.key === 'Enter') {
               bodyRef.current.focus()
             }
           }}
           disabled={state !== "lobby"}
-        ></Input>
-        ) : <div/> 
-      }
-      <Input.Search
-        rows={4}
-        value={body}
-        ref={bodyRef}
-        style={{ marginBottom: 10 }}
-        enterButton="Send"
-        onChange={(e) => setBody(e.target.value)}
-        placeholder="Type a message here..."
-        onSearch={(msg) => {
-          if (!msg || !username) {
-            displayStatus({
-              type: 'error',
-              msg: 'Please enter a username and a message body.'
-            })
-            return
-          }
+        ></Input>)(
+        <Input.Search
+          rows={4}
+          value={body}
+          ref={bodyRef}
+          style={{ marginBottom: 10 }}
+          enterButton="Send"
+          onChange={(e) => setBody(e.target.value)}
+          placeholder="Type a message here..."
+          onSearch={(msg) => {
+            if (!msg || !username) {
+              displayStatus({
+                type: 'error',
+                msg: 'Please enter a username and a message body.'
+              })
+              return
+            }
 
-          sendMessage({ name: username, body: msg })
-          setBody('')
-        }}
-      ></Input.Search>
-        
+            sendMessage({ name: username, body: msg })
+            setBody('')
+          }}
+        ></Input.Search>
+        ): <div/> 
+      }
       <Input
         value={choose}
         style={extraInput?{marginBottom: 10 }:{display:"none",marginBottom: 10 }}
