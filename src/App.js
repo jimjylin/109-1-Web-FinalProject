@@ -436,40 +436,43 @@ function App() {
         ) : <div/>}      
       </div>
       
-      {state === "lobby" || state === "waiting for start..." ? (<Input
-          placeholder="Username"
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
-          style={{ marginBottom: 10}}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              bodyRef.current.focus()
-            }
-          }}
-          disabled={state !== "lobby"}
-        ></Input>)(
-        <Input.Search
-          rows={4}
-          value={body}
-          ref={bodyRef}
-          style={{ marginBottom: 10 }}
-          enterButton="Send"
-          onChange={(e) => setBody(e.target.value)}
-          placeholder="Type a message here..."
-          onSearch={(msg) => {
-            if (!msg || !username) {
-              displayStatus({
-                type: 'error',
-                msg: 'Please enter a username and a message body.'
-              })
-              return
-            }
+      {state === "lobby" || state === "waiting for start..." ? 
+        <div>
+          <Input
+            placeholder="Username"
+            value={username}
+            onChange={(e) => setUsername(e.target.value)}
+            style={{ marginBottom: 10}}
+            onKeyDown={(e) => {
+              if (e.key === 'Enter') {
+                bodyRef.current.focus()
+              }
+            }}
+            disabled={state !== "lobby"}
+          ></Input>
+          <Input.Search
+            rows={4}
+            value={body}
+            ref={bodyRef}
+            style={{ marginBottom: 10 }}
+            enterButton="Send"
+            onChange={(e) => setBody(e.target.value)}
+            placeholder="Type a message here..."
+            onSearch={(msg) => {
+              if (!msg || !username) {
+                displayStatus({
+                  type: 'error',
+                  msg: 'Please enter a username and a message body.'
+                })
+                return
+              }
 
-            sendMessage({ name: username, body: msg })
-            setBody('')
-          }}
-        ></Input.Search>
-        ): <div/> 
+              sendMessage({ name: username, body: msg })
+              setBody('')
+            }}
+          ></Input.Search>
+        </div>
+      : <div/> 
       }
       <Input
         value={choose}
