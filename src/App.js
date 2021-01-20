@@ -472,7 +472,7 @@ function App() {
             }}
           ></Input.Search>
         </div>
-      : <div/> 
+      : {}
       }
       <Input
         value={choose}
@@ -500,7 +500,7 @@ function App() {
             <Button type="primary" onClick={() => {sendData(['start'])}}>
               Start
             </Button>
-          ) : <div/>
+          ) : {}
         }   
 
       </div>
