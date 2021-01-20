@@ -364,13 +364,17 @@ function App() {
             {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
-            <div id="playertableA1" className="playercardA" onClick={state === "Your turn!!"?() =>{setBody(0)}:""} style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "1px solid rgb(38, 255, 9)" : ""}}>
-              <Button >                    
-              </Button>
+            <div 
+              id="playertableA1" 
+              className="playercardA" 
+              onClick={state === "Your turn!!"?() =>{setBody(0)}:""} 
+              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "1px solid rgb(38, 255, 9)" : ""}}>
             </div>
-            <div id="playertableA2" className="playercardA" onClick={state === "Your turn!!"?() =>{setBody(1)}:""} style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== seatNo ? "none" : `url(${cards[hand[1]]})`, border: body === 1 ? "1px solid rgb(38, 255, 9)" : "" }}>
-              <div className="cardcontent cardtype_1" id="2">                            
-              </div>
+            <div 
+              id="playertableA2" 
+              className="playercardA" 
+              onClick={state === "Your turn!!"?() =>{setBody(1)}:""} 
+              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== seatNo ? "none" : `url(${cards[hand[1]]})`, border: body === 1 ? "1px solid rgb(38, 255, 9)" : "" }}>
             </div>
           </div>
         </div>
@@ -379,13 +383,15 @@ function App() {
             {playerNames[(seatNo+1)%4] !== 0 ? playerNames[(seatNo+1)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
-            <div id="playertableB1" className="playercard" style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+1)%4] ? "none" : `url(${cards[0]})`}}>
-              <div className="cardcontent cardtype_1" id="1">                            
-              </div>
+            <div 
+              id="playertableB1" 
+              className="playercard" 
+              style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+1)%4] ? "none" : `url(${cards[0]})`}}>
             </div>
-            <div id="playertableB2" className="playercard" style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== (seatNo+1)%4 || !alive[(seatNo+1)%4] ? "none" : `url(${cards[0]})` }}>
-              <div className="cardcontent cardtype_1" id="2">                            
-              </div>
+            <div 
+              id="playertableB2" 
+              className="playercard" 
+              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== (seatNo+1)%4 || !alive[(seatNo+1)%4] ? "none" : `url(${cards[0]})` }}>
             </div>
           </div>
         </div>
@@ -394,13 +400,15 @@ function App() {
             {playerNames[(seatNo+2)%4] !== 0 ? playerNames[(seatNo+2)%4] : (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
-            <div id="playertableC1" className="playercard" style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+2)%4] ? "none" : `url(${cards[0]})`}}>
-              <div className="cardcontent cardtype_1" id="1">                            
-              </div>
+            <div 
+              id="playertableC1" 
+              className="playercard" 
+              style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+2)%4] ? "none" : `url(${cards[0]})`}}>
             </div>
-            <div id="playertableC2" className="playercard" style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== (seatNo+2)%4 || !alive[(seatNo+2)%4] ? "none" : `url(${cards[0]})` }}>
-              <div className="cardcontent cardtype_1" id="2">                            
-              </div>
+            <div 
+              id="playertableC2" 
+              className="playercard" 
+              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== (seatNo+2)%4 || !alive[(seatNo+2)%4] ? "none" : `url(${cards[0]})` }}>
             </div>
           </div>
         </div>
@@ -409,13 +417,13 @@ function App() {
             {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)" : ""}
           </div>
           <div>
-            <div id="playertableD1" className="playercard" style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+3)%4] ? "none" : `url(${cards[0]})`}}>
-              <div className="cardcontent cardtype_1" id="1">                            
-              </div>
+            <div id="playertableD1" 
+              className="playercard" 
+              style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+3)%4] ? "none" : `url(${cards[0]})`}}>
             </div>
-            <div id="playertableD2" className="playercard" style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== (seatNo+3)%4 || !alive[(seatNo+3)%4] ? "none" : `url(${cards[0]})` }}>
-              <div className="cardcontent cardtype_1" id="2">                            
-              </div>
+            <div id="playertableD2" 
+              className="playercard" 
+              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== (seatNo+3)%4 || !alive[(seatNo+3)%4] ? "none" : `url(${cards[0]})` }}>
             </div>
           </div>
         </div>
@@ -485,7 +493,7 @@ function App() {
       ></Input>
       <Input
         value={guessNum}
-        style={guess?{}:{display:"none"}}
+        style={guess?"":{display:"none"}}
         placeholder="Type a card number here"
         onChange={(e) => setGuessNum(e.target.value)}
       >
