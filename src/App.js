@@ -1,9 +1,9 @@
 import './App.css'
 import React, { useEffect, useRef, useState } from 'react'
 //import useChat from './useChat'
-import { Button, Input, message, Tag, Select } from 'antd'
+import { Button, Input, message, Tag ,Select } from 'antd'
 import {
-  //CheckCircleOutlined,
+  CheckCircleOutlined,
   SyncOutlined,
   // CloseCircleOutlined,
   // ExclamationCircleOutlined,
@@ -12,7 +12,6 @@ import {
 } from '@ant-design/icons';
 import cards from "./images";
 const client = new WebSocket('ws://localhost:4000')
-
 const { Option } = Select;
 function App() {
   const [board, setBoard] = useState([[],[],[],[]])
@@ -30,6 +29,7 @@ function App() {
   const [body, setBody] = useState('')               
   const [seatNo, setseatNo] = useState(-1)
   const [turn, setTurn] = useState(-1)
+  const [deckNum, setDeckNum] = useState(16)
   const bodyRef = useRef(null)
   // useEffect(()=>{
     
@@ -85,6 +85,7 @@ function App() {
     }
     return true
   }
+  
   const playcard = (i)=>{
 
     if(i === 0 || i === 1){
@@ -227,17 +228,20 @@ function App() {
         setInvisible(()=>payload.map(() =>{return false}))
         break
       }
+      case 'deckNum':{
+        setDeckNum(payload)
+        break
+      }
       case 'sitSuccess':{
+        
         setseatNo(payload)
         setState('waiting for start...')
         break
       }
       case 'turn':{
+        console.log(state)
         if(payload === seatNo) setState('Your turn!!')
         else if(alive[seatNo]) setState('wait')
-        // let newArr = [...invisible]
-        // newArr[payload] = false
-        // setInvisible(()=>newArr)
         setInvisible((prev)=>
           //console.log(prev,'aaaaaa')
           prev.map((v, i)=>{
@@ -259,8 +263,6 @@ function App() {
         else{
           setState('Player'+String(payload)+' Won!!')
         }
-        
-        
         break
       }
       case 'lose':{
@@ -302,7 +304,12 @@ function App() {
         break
     }
   }
-  
+  const disPlayer = (n) => {
+    if(state === "lobby" || state === "waiting for start..." || !alive[n] ){
+      return false;
+    }
+    return true;
+  }
   const displayStatus = (s) => {
     if (s.msg) {
       const { type, msg } = s
@@ -379,7 +386,7 @@ function App() {
           </div>
         </div>
         <div className="playertableB" >
-          <div className="playertablename"  style={{"textDecoration":(alive[(seatNo+1)%4]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
+          <div className="playertablename"  style={{"textDecoration":(alive[(seatNo+2)%4]) || state === "lobby" || state === "waiting for start..."?"":("line-through")}}>
             {playerNames[(seatNo+1)%4] !== 0 ? playerNames[(seatNo+1)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
           </div>
           <div>
@@ -414,7 +421,7 @@ function App() {
         </div>
         <div className="playertableD" >
           <div className="playertablename" style={{"textDecoration":(alive[(seatNo+3)%4]) || state === "lobby" || state === "waiting for start..." ?"":("line-through")}}>
-            {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)" : ""}
+            {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4] :  ((state === "lobby" || state === "waiting for start...") ? "(waiting for player...)" : "")}
           </div>
           <div>
             <div id="playertableD1" 
@@ -427,84 +434,66 @@ function App() {
             </div>
           </div>
         </div>
-        {state === "wait" || state === "Your turn!!" ? (
-          <div className="tablecenter">
-            <div className="discardpile">
-              <div className="lastplayed">Last played</div>
-              <div className="cardlastplayed">
 
-              </div>
-            </div>
-            <div className="deck">
-              <div className="cardremaining">Deck(x10)</div>
-              <div className="deckcard">
+        <div className="tablecenter" style={state === "wait" || state === "Your turn!!"?{}:{display:"none"}}>
+          <div className="discardpile">
+            <div className="lastplayed">Last played</div>
+            <div className="cardlastplayed">
 
-              </div>
             </div>
           </div>
-        ) : <div/>}      
+          <div className="deck">
+            <div className="cardremaining">{"Deck(x"+String(deckNum)}</div>
+            <div className="deckcard">
+            </div>
+          </div>
+        </div>
       </div>
       
-      {state === "lobby" || state === "waiting for start..." ? 
-        <div>
-          <Input
-            placeholder="Username"
-            value={username}
-            onChange={(e) => setUsername(e.target.value)}
-            style={{ marginBottom: 10}}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                bodyRef.current.focus()
-              }
-            }}
-            disabled={state !== "lobby"}
-          ></Input>
-          <Input.Search
-            rows={4}
-            value={body}
-            ref={bodyRef}
-            style={{ marginBottom: 10 }}
-            enterButton="Send"
-            onChange={(e) => setBody(e.target.value)}
-            placeholder="Type a message here..."
-            onSearch={(msg) => {
-              if (!msg || !username) {
-                displayStatus({
-                  type: 'error',
-                  msg: 'Please enter a username and a message body.'
-                })
-                return
-              }
+      
+      <div style={state === "lobby" || state === "waiting for start..." ?{}:{display:"none"}}>
+        <Input
+          placeholder="Username"
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
+          style={{ marginBottom: 10}}
+          onKeyDown={(e) => {
+            if (e.key === 'Enter') {
+              bodyRef.current.focus()
+            }
+          }}
+          disabled={state !== "lobby"}
+        ></Input>
+        <Input.Search
+          rows={4}
+          value={body}
+          ref={bodyRef}
+          style={{ marginBottom: 10 }}
+          enterButton="Send"
+          onChange={(e) => setBody(e.target.value)}
+          placeholder="Type a message here..."
+          onSearch={(msg) => {
+            if (!msg || !username) {
+              displayStatus({
+                type: 'error',
+                msg: 'Please enter a username and a message body.'
+              })
+              return
+            }
 
-              sendMessage({ name: username, body: msg })
-              setBody('')
-            }}
-          ></Input.Search>
-        </div>
-      : <div/>
-      }
-      <Input
-        value={choose}
-        style={extraInput?{marginBottom: 10 }:{display:"none",marginBottom: 10 }}
-        placeholder="Type the Number of the player here"
-        onChange={(e) => {
-          return setChoose(e.target.value)
-        }}
-      ></Input>
-      <Input
-        value={guessNum}
-        style={guess?"":{display:"none"}}
-        placeholder="Type a card number here"
-        onChange={(e) => setGuessNum(e.target.value)}
-      >
-      </Input>
+            sendMessage({ name: username, body: msg })
+            setBody('')
+          }}
+        ></Input.Search>
+      </div>
+      
       <Select 
         placeholder="Select a player" 
         style={extraInput?{ width: 120 }:{ display:"none" }}
         onChange={(e) => {
           setChoose(playerNames.indexOf(e))
         }}>
-        {playerNames.filter((player)=>{return player !== 0}).map((player, i) =>(
+        {playerNames.filter((player)=>{return (player !== 0 && player !== username)}).map((player, i) =>(
           <Option value={player}>
             {player}
           </Option>
@@ -527,18 +516,14 @@ function App() {
         <button onClick={()=>console.log(choose, guessNum, alive)}>
           aaa
         </button>
-        { state === "waiting for start..." ? 
-            <Button type="primary" onClick={() => {sendData(['start'])}}>
-              Start
-            </Button>
-            : <div/>
-        }   
-        { state === "Your turn!!" ? 
-            <Button type="primary" danger onClick={clearMessages} >
-              Play
-            </Button>
-            : <div/>
-        }   
+
+        <Button type="primary" onClick={() => {sendData(['start'])}} style={state === "waiting for start..."?{}:{display:"none"}}>
+          Start
+        </Button>
+        <Button type="primary" danger onClick={clearMessages} style={state === "Your turn!!" ?{}:{display:"none"}}>
+          Play
+        </Button>
+            
               
       </div>
     </div>

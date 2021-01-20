@@ -48,7 +48,6 @@ wss.on('connection', ws => {
 
   //console.log(CLIENTS[0] == CLIENTS[1])
   ws.onmessage = (message) => {
-    console.log("socket connected")
     const { data } = message
     
     const [task, payload] = JSON.parse(data)
@@ -60,13 +59,7 @@ wss.on('connection', ws => {
         sendData(['seat', table.seat])
         break
       }
-      case 'curSeat': {
-        //broadcast(JSON.stringify(['seat', seat]))
-        //CLIENTS[0].send(JSON.stringify(['seat', seat]))
-        sendData(['seat', table.seat])
-        // TODO
-        break
-      }
+
       case 'sitDown': {
         //console.log(payload)
         table.sitDown(ws, payload[1], payload[0])
@@ -85,6 +78,11 @@ wss.on('connection', ws => {
       }
       case 'bye':{
         console.log("bye")
+        const index = CLIENTS.indexOf(ws);
+        console.log(index)
+        if (index > -1) {
+          CLIENTS.splice(index, 1);
+        }
         break
       }
       default:{
