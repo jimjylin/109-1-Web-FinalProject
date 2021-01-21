@@ -3,20 +3,12 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-<<<<<<< HEAD
   height: 100vh;
   width: 40vw;
   
   margin: auto;
   background-image: url("./img/background2.jpg");
   background-size: 40vw 100vh;
-=======
-  height: 98vh;
-  width: 565px;
-  margin: auto;
-  background-image: url("./img/background2.jpg");
-  background-size: cover;
->>>>>>> 1b7ce80c17f7263d46bc4a517e523ced9465f9b4
   opacity: 1;
   /* border-radius: 25px; */
 }
@@ -101,13 +93,8 @@
 
 .playertableA {
 	position:absolute;
-<<<<<<< HEAD
 	top: 65vh;
 	left: calc(50vw - 75px);
-=======
-	top: 62%;
-	left: 43%;
->>>>>>> 1b7ce80c17f7263d46bc4a517e523ced9465f9b4
 	height: 120px; 
 	width: 150px;
 	/* background-color: darkcyan; */
@@ -116,13 +103,8 @@
 
 .playertableB {
 	position:absolute;
-<<<<<<< HEAD
 	top: 40vh;
 	left: calc(63vw - 75px);
-=======
-	top: 38%;
-	left: 59%;
->>>>>>> 1b7ce80c17f7263d46bc4a517e523ced9465f9b4
 	height: 120px; 
 	width: 150px;
 	/* background-color: rgb(216, 97, 0); */
@@ -141,13 +123,8 @@
 
 .playertableD {
 	position:absolute;
-<<<<<<< HEAD
 	top: 40vh;
 	left: calc(37vw - 75px);
-=======
-	top: 38%;
-	left: 27%;
->>>>>>> 1b7ce80c17f7263d46bc4a517e523ced9465f9b4
 	height: 120px; 
 	width: 150px;
 	/* background-color: rgb(139, 214, 42); */
@@ -156,13 +133,8 @@
 
 .tablecenter {
 	position: absolute;
-<<<<<<< HEAD
 	top: 40vh;
 	left: calc(50vw - 75px);
-=======
-	top: 38%;
-	left: 43%;
->>>>>>> 1b7ce80c17f7263d46bc4a517e523ced9465f9b4
 	height: 120px; 
 	width: 150px;
 	/* background-color: rgb(211, 18, 18); */

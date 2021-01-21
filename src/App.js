@@ -608,7 +608,6 @@ function App() {
         <button className="button" onClick={()=>console.log(start, alive)}>
           aaa
         </button>
-<<<<<<< HEAD
         {!start?
           <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={!start&&seatNo!==-1?{}:{visibility:"hidden"}}>
             Start
@@ -619,18 +618,6 @@ function App() {
         }
         
         
-=======
-        <button className="button" onClick={()=>{sendData(['reset'])}} style={{display:(seatNo===-1?"none":""), width:"40px"}}>
-          reset
-        </button>
-       
-        <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={!start&&seatNo!==-1?{}:{visibility:"hidden"}}>
-          Start
-        </Button>
-        <Button className="button" type="primary" danger onClick={play} style={state === "Your turn!!" ?{}:{display:"none"}}>
-          Play
-        </Button>
->>>>>>> 1b7ce80c17f7263d46bc4a517e523ced9465f9b4
         
               
       </div>
