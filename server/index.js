@@ -83,11 +83,18 @@ wss.on('connection', ws => {
       }
       case 'bye':{
         console.log("bye")
+        table.leave(payload)
+        broadcast(['seat', table.seat])
         const index = CLIENTS.indexOf(ws);
         console.log(index)
         if (index > -1) {
           CLIENTS.splice(index, 1);
         }
+        break
+      }
+      case 'leave':{
+        table.leave(payload)
+        broadcast(['seat', table.seat])
         break
       }
       case 'reset':{

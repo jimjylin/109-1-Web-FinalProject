@@ -5,7 +5,8 @@ import { Button, Input, message, Tag ,Select } from 'antd'
 import {
   CheckCircleOutlined,
   SyncOutlined,
-  UserAddOutlined
+  UserAddOutlined,
+  UserDeleteOutlined
   // CloseCircleOutlined,
   // ExclamationCircleOutlined,
   // ClockCircleOutlined,
@@ -33,12 +34,12 @@ function App() {
   const [deckNum, setDeckNum] = useState(16)
   const bodyRef = useRef(null)
   const [start, setStart] = useState(false)
-
+  const [lastPlay, setLastPlay] = useState(-1)
   // useEffect(()=>{
     
   // })
   window.onunload = ()=>{
-    sendData(['bye'])
+    sendData(['bye', seatNo])
     return "bye"
   }
   
@@ -57,8 +58,6 @@ function App() {
       else if(!isNaN(Number(body)) && turn === seatNo)
         playcard(Number(body))
     }
-    
-      
   }
   const sit = ()=>{
     if(username === ''){
@@ -72,6 +71,21 @@ function App() {
         }
       }
     }
+  }
+  const leave = ()=>{
+    if(seatNo === -1){
+      return
+      
+    }
+    sendData(['leave', seatNo])
+    setPlayerNames((prev)=>
+      prev.map((name, i)=>{
+        if(i === seatNo) return 0
+        else return name
+      })
+    )
+    setseatNo(-1)
+    setState("lobby")
   }
   const play = ()=>{
     if(body !== 1 && body !== 0)
@@ -283,6 +297,7 @@ function App() {
         else{
           setState('Player'+String(payload)+' Won!!')
         }
+        setStart(false)
         break
       }
       case 'lose':{
@@ -307,6 +322,10 @@ function App() {
       }
       case 'discard':{
         setHand(()=>[])
+        break
+      }
+      case 'lastPlay':{
+        setLastPlay(payload)
         break
       }
       case 'setHand':{
@@ -343,6 +362,7 @@ function App() {
     setTurn(-1)
     setDeckNum(16)
     setStart(false)
+    setLastPlay(-1)
   }
   const displayStatus = (s) => {
     if (s.msg) {
@@ -403,25 +423,28 @@ function App() {
         <div className="playertableA" >
           <div className="playertablename" 
           style={{
-            "textDecoration":(alive[seatNo]) || state === "lobby" || state === "waiting for start..."?"":("line-through"),
+            "textDecoration": !start || (alive[seatNo])?"":("line-through"),
             "backgroundImage": `url(${cards[9]})`
           }}>
-            {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
+            
+            {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4]+" ":(!start ? "(waiting for player...)":"")}
+            <SyncOutlined spin style={{display:((start && seatNo === turn)?"":"none")}}/>
+            
           </div>
           <div>
             
             <div 
               id="playertableA1" 
               className="playercardA" 
-              onClick={state === "Your turn!!"?() =>{setBody(0)}:()=>{}} 
-              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "3px groove white":"" }}>
+              onClick={turn === seatNo?() =>{setBody(0)}:()=>{}} 
+              style={{"backgroundImage" :  !start || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "3px groove white":"" }}>
             </div>
             
             <div 
               id="playertableA2" 
               className="playercardA" 
-              onClick={state === "Your turn!!"?() =>{setBody(1)}:()=>{}} 
-              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== seatNo ? "none":`url(${cards[hand[1]]})`,  border: body === 1 ? "3px groove white":"" }}>
+              onClick={turn === seatNo?() =>{setBody(1)}:()=>{}} 
+              style={{"backgroundImage" : !start || turn !== seatNo ? "none":`url(${cards[hand[1]]})`,  border: body === 1 ? "3px groove white":"" }}>
             </div>
           </div>
         </div>
@@ -429,22 +452,23 @@ function App() {
           <div 
             className="playertablename"  
             style={{
-              "textDecoration":(alive[(seatNo+1)%4]) || state === "lobby" || state === "waiting for start..."?"":"line-through", 
-              "backgroundImage": state === "lobby" || state === "waiting for start..." || playerNames[(seatNo+1)%4] !== 0 ? `url(${cards[9]})` : ""
+              "textDecoration": !start || (alive[(seatNo+1)%4])?"":"line-through", 
+              "backgroundImage": !start || playerNames[(seatNo+1)%4] !== 0 ? `url(${cards[9]})` : ""
             }}>
-            {playerNames[(seatNo+1)%4] !== 0 ? playerNames[(seatNo+1)%4] :   (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
+            {playerNames[(seatNo+1)%4] !== 0 ? playerNames[(seatNo+1)%4]+" " :   (!start) ? "(waiting for player...)":""}
+            <SyncOutlined spin style={{display:((start && (seatNo+1)%4 === turn)?"":"none")}}/>
           </div>
           <div>
             
             <div 
               id="playertableB1" 
               className="playercard" 
-              style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+1)%4] ? "none" : `url(${cards[0]})`}}>
+              style={{"backgroundImage" : !start || !alive[(seatNo+1)%4] ? "none" : `url(${cards[0]})`}}>
             </div>
             <div 
               id="playertableB2" 
               className="playercard" 
-              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== (seatNo+1)%4 || !alive[(seatNo+1)%4] ? "none" : `url(${cards[0]})` }}>
+              style={{"backgroundImage" :  !start || turn !== (seatNo+1)%4 || !alive[(seatNo+1)%4] ? "none" : `url(${cards[0]})` }}>
             </div>
           </div>
         </div>
@@ -452,22 +476,23 @@ function App() {
           <div 
             className="playertablename"  
             style={{
-              "textDecoration":(alive[(seatNo+2)%4]) || state === "lobby" || state === "waiting for start..."?"":"line-through", 
-              "backgroundImage": state === "lobby" || state === "waiting for start..." || playerNames[(seatNo+2)%4] !== 0 ? `url(${cards[9]})` : ""
+              "textDecoration": !start || (alive[(seatNo+2)%4])?"":"line-through", 
+              "backgroundImage": !start || playerNames[(seatNo+2)%4] !== 0 ? `url(${cards[9]})` : ""
           }}>
-            {playerNames[(seatNo+2)%4] !== 0 ? playerNames[(seatNo+2)%4] : (state === "lobby" || state === "waiting for start...") ? "(waiting for player...)":""}
+            {playerNames[(seatNo+2)%4] !== 0 ? playerNames[(seatNo+2)%4]+" " : (!start ? "(waiting for player...)":"")}
+            <SyncOutlined spin style={{display:((start && (seatNo+2)%4 === turn)?"":"none")}}/>
           </div>
           <div>
             
             <div 
               id="playertableC1" 
               className="playercard" 
-              style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+2)%4] ? "none" : `url(${cards[0]})`}}>
+              style={{"backgroundImage" : !start || !alive[(seatNo+2)%4] ? "none" : `url(${cards[0]})`}}>
             </div>
             <div 
               id="playertableC2" 
               className="playercard" 
-              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== (seatNo+2)%4 || !alive[(seatNo+2)%4] ? "none" : `url(${cards[0]})` }}>
+              style={{"backgroundImage" :  !start || turn !== (seatNo+2)%4 || !alive[(seatNo+2)%4] ? "none" : `url(${cards[0]})` }}>
             </div>
           </div>
         </div>
@@ -475,32 +500,33 @@ function App() {
           <div 
             className="playertablename"  
             style={{
-              "textDecoration":(alive[(seatNo+3)%4]) || state === "lobby" || state === "waiting for start..."?"":"line-through", 
-              "backgroundImage": state === "lobby" || state === "waiting for start..." || playerNames[(seatNo+3)%4] !== 0 ? `url(${cards[9]})` : ""
+              "textDecoration": !start || (alive[(seatNo+3)%4])?"":"line-through", 
+              "backgroundImage": !start || playerNames[(seatNo+3)%4] !== 0 ? `url(${cards[9]})` : ""
           }}>
-            {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4] :  ((state === "lobby" || state === "waiting for start...") ? "(waiting for player...)" : "")}
+            {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4]+" " :  (!start ? "(waiting for player...)" : "")}
+            <SyncOutlined spin style={{display:((start && (seatNo+3)%4 === turn)?"":"none")}}/>
+          
           </div>
           <div>
             
             <div id="playertableD1" 
               className="playercard" 
-              style={{"backgroundImage" : state === "lobby" || state === "waiting for start..." || !alive[(seatNo+3)%4] ? "none" : `url(${cards[0]})`}}>
+              style={{"backgroundImage" : !start || !alive[(seatNo+3)%4] ? "none" : `url(${cards[0]})`}}>
             </div>
             <div id="playertableD2" 
               className="playercard" 
-              style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== (seatNo+3)%4 || !alive[(seatNo+3)%4] ? "none" : `url(${cards[0]})` }}>
+              style={{"backgroundImage" :  !start || turn !== (seatNo+3)%4 || !alive[(seatNo+3)%4] ? "none" : `url(${cards[0]})` }}>
             </div>
           </div>
         </div>
-        <div style={{ backgroundImage:`${cards[10]}` ,"display":(start?"none":"") }}>
-          <Button id="sitButton" className="sitbutton" type="primary" shape="circle" icon={<UserAddOutlined />} size={"large"} onClick={sit} style={{ backgroundColor: "rgb(236, 131, 131)", borderColor:"rgb(236, 131, 131)", borderRadius:"0px"}}/>
-
+        <div style={{"background-color":"white", "display":(start?"none":"")}}>
+          <Button id="sitButton" type={seatNo===-1?"":"primary"} shape="circle" icon={seatNo===-1?<UserAddOutlined />:<UserDeleteOutlined />} size={"large"} onClick={seatNo===-1?sit:leave}/>
         </div>
         
         <div className="tablecenter" style={state === "wait" || state === "Your turn!!"?{}:{display:"none"}}>
           <div className="discardpile">
-            <div className="lastplayed">Last played</div>
-            <div className="cardlastplayed">
+            <div className="lastplayed" >Last played</div>
+            <div className="cardlastplayed" style={{"backgroundImage": (lastPlay!==-1?`url(${cards[lastPlay]})`:"none")}}>
 
             </div>
           </div>
@@ -513,7 +539,7 @@ function App() {
       </div>
       
       
-      <div style={state === "lobby" || state === "waiting for start..." ?{}:{display:"none"}}>
+      <div style={!start ?{}:{display:"none"}}>
         <Input
         className="input"
           placeholder="Username"
@@ -580,16 +606,16 @@ function App() {
         </Select>
       </div> 
       <div>
-        <button className="button" onClick={()=>console.log(turn, seatNo)}>
+        <button className="button" onClick={()=>console.log(playerNames, seatNo)}>
           aaa
         </button>
         <button className="button" onClick={()=>{sendData(['reset'])}} style={{display:(seatNo===-1?"none":"")}}>
           reset
         </button>
-        <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={state === "waiting for start..."?{}:{display:"none"}}>
+        <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={!start&&seatNo!==-1?{}:{visibility:"hidden"}}>
           Start
         </Button>
-        <Button className="button" type="primary" danger onClick={play} style={state === "Your turn!!" ?{}:{display:"none"}}>
+        <Button className="button" type="primary" danger onClick={play} style={state === "Your turn!!" ?{}:{visibility:"hidden"}}>
           Play
         </Button>
         
