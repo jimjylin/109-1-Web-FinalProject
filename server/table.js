@@ -9,14 +9,7 @@ class Table{
         this.deck = new Deck(true)
         this.seat = ["","","",""]
     }
-    reset(){
-        this.broadcast(['reset'])
-        this.turn = -1
-        this.players = []
-        this.deck.reset()
-        this.seat = ["","","",""]
-        console.log("table reset")
-    }
+    
     restart(){
         this.turn = -1
         this.deck.reset()
@@ -36,8 +29,11 @@ class Table{
             this.broadcast(['seat', this.seat])
             client.send(JSON.stringify(['sitSuccess', seatNum]))
         }
+        else if(this.seat.length === 4){
+            client.send(JSON.stringify(['error', 'Sorry, the table is full, please wait']))
+        }
         else{
-            client.send(JSON.stringify(['error']))
+            client.send(JSON.stringify(['error', 'Sorry, please try again']))
         }
     }
 
