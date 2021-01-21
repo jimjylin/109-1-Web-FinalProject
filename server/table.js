@@ -6,10 +6,10 @@ var MongoClient = require('mongodb').MongoClient;
 const PlayerScore = require('./models/player_score')
 const Record = require('./models/record')
 
-if (!process.env.MONGO_URL) {
-    console.error('Missing MONGO_URL!!!')
-    process.exit(1)
-}
+//if (!process.env.MONGO_URL) {
+//    console.error('Missing MONGO_URL!!!')
+//    process.exit(1)
+//}
 
 // MongoClient.connect(process.env.MONGO_URL, function(err, db) {
 //     if (err) throw err;
@@ -21,74 +21,45 @@ if (!process.env.MONGO_URL) {
 // });
 
 var sqlite3 = require('sqlite3').verbose();
-var db = new sqlite3.Database(':memory:');
+var db = new sqlite3.Database('./sqlite.db');
 
-db.run('CREATE TABLE player_score(name text, score int)');
-db.run('CREATE TABLE record(game_index int, winner_index int)');
+db.run('DELETE FROM player_score where score >= 0')
+db.run('DELETE FROM record where game_index > 0')
 
-// mongoose.connect(process.env.MONGO_URL, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true
-// })
+// db.run('INSERT INTO record(game_index, winner_index) VALUES(1, 1)')
+// db.run('INSERT INTO record(game_index, winner_index) VALUES(2, 3)')
+// db.run('INSERT INTO record(game_index, winner_index) VALUES(3, 1)')
 
-// const db = mongoose.connection
-
-// db.on('error', (error) => {
-//     console.error(error)
-// })
-
-const chooseFirstPlayer = async (players) => {
+chooseFirstPlayer = (players) => {
     // fetch
     let firstPlayer = -1
-    // console.log("in func")
-    // const client = await MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true }).catch(err => { console.log(err); });
-    // if (!client) {
-    //     return;
-    // }
-    // console.log("middle");
-    // const db = client.db("final");
+        // console.log("in func")
+        // const client = await MongoClient.connect(process.env.MONGO_URL, { useNewUrlParser: true }).catch(err => { console.log(err); });
+        // if (!client) {
+        //     return;
+        // }
+        // console.log("middle");
+        // const db = client.db("final");
 
-    // let collection = db.collection("record");
+    let sql = `SELECT * FROM record ORDER BY game_index`;
 
-    // let res = await collection.find().sort({ game_index: -1 })
-
-    // console.log("res :", res);
-
-    let sql = `SELECT winner_index FROM record
-           ORDER BY game_index`;
-
-    db.get(sql, [], (err, rows) => {
+    console.log("before get")
+    db.all(sql, [], (err, rows) => {
+        console.log("in get")
         if (err) {
-             console.log(err)
+            console.log(err)
         } else {
-            console.log("rows: ")
-            rows.forEach((row) => {
-                console.log(row.name);
-            });
-            if (rows.length !== 0) {
+            console.log("rows: ", rows)
+            if (rows.length) {
                 firstPlayer = rows[0].winner_index
+                console.log("firstPlayer", firstPlayer)
             }
         }
     })
 
-    // db.all(sql, [], (err, rows) => {
-    //     if (err) {
-    //         throw err;
-    //     }
-    //     console.log("rows: ")
-    //     rows.forEach((row) => {
-    //         console.log(row.name);
-    //     });
-    //     if (rows.length !== 0) {
-    //         firstPlayer = rows[0].winner_index
-    //     }
-    // });
-
-    // console.log("after await")
-    // Record.find().sort({ game_index: -1 })
     if (firstPlayer === -1) {
         firstPlayer = players[Math.floor(Math.random() * players.length)].seatNum
-    } 
+    }
     return firstPlayer
 }
 
@@ -99,6 +70,7 @@ class Table {
         this.tableID = tableID
         this.deck = new Deck(false)
         this.seat = ["", "", "", ""]
+        this.gameCnt = 0
     }
 
     restart() {
@@ -173,6 +145,7 @@ class Table {
         this.broadcast(['lose', n])
     }
     win(n) {
+        db.run('INSERT INTO record(game_index, winner_index) VALUES(' + String(this.gameCnt) + ', ' + String(n) + ')')
         this.broadcast(['win', n])
         this.restart()
         this.turn = n
@@ -202,6 +175,8 @@ class Table {
         return out
     }
     sendByNum(n, msg) {
+        //if(!this.playerByNum(n)) console.log("AAAAAAAAA")
+        //console.log("this.playerByNum(n)", this.playerByNum(n), n)
         this.playerByNum(n).client.send(JSON.stringify(msg))
     }
     drawByNum(n) {
@@ -211,10 +186,15 @@ class Table {
     }
 
     init() {
+        this.gameCnt += 1
+            //db.run('INSERT INTO record(game_index, winner_index) VALUES(3, 1)')
+        for (let i = 0; i < this.players.length; i++) {
+            db.run('INSERT INTO player_score(name, score) VALUES(' + this.players[i].name + ',0)')
+        }
         console.log("playerNum", this.players.length)
             // const start = Math.floor(Math.random() * this.players.length)
         this.turn = chooseFirstPlayer(this.players)
-        //console.log("turn=" ,this.turn)
+            //console.log("turn=" ,this.turn)
         for (let i = 0; i < this.players.length; i++) {
             this.drawByNum(this.players[i].seatNum)
                 //this.sendByNum(this.players[i].seatNum,['start', start])
@@ -226,7 +206,7 @@ class Table {
             //this.broadcast(['start', this.deck.num])
             //this.showHand()
     }
-    
+
     showHand() {
         for (let i = 0; i < this.players.length; i++) {
             console.log(this.players[i].name, this.players[i].hand)
