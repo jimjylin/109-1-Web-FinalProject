@@ -15,8 +15,16 @@ class Table{
         this.players = []
         this.deck.reset()
         this.seat = ["","","",""]
-        
         console.log("table reset")
+    }
+    restart(){
+        this.turn = -1
+        this.deck.reset()
+    }
+    leave(i){
+        if(i === -1) return
+        this.players = this.players.filter((p)=>{return p.seatNum!==i})
+        this.seat[i] = ""
     }
     get Num(){
         return this.players.filter((p)=>{return p.alive}).length
@@ -81,6 +89,7 @@ class Table{
         }
         this.playerByNum(this.turn).play(payload[0])
         this.broadcast(['boardUpdate', [this.turn, payload[0]]])
+        this.broadcast(['lastPlay', payload[0]])
     }
     lose(n){
         this.playerByNum(n).alive = false
@@ -88,6 +97,7 @@ class Table{
     }
     win(n){
         this.broadcast(['win',n])
+        this.restart()
     }
     broadcast(msg){
         for(let i = 0;i<this.players.length;i++){
