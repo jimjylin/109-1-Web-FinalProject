@@ -590,9 +590,9 @@ function App() {
         </Select>
       </div> 
       <div>
-        <button className="button" onClick={()=>console.log(start, alive)}>
+        {/* <button className="button" onClick={()=>console.log(start, alive)}>
           aaa
-        </button>
+        </button> */}
         {!start?
           <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={!start&&seatNo!==-1?{}:{visibility:"hidden"}}>
             Start
