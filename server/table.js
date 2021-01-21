@@ -6,13 +6,15 @@ class Table{
         this.turn = -1
         this.players = []
         this.tableID = tableID
-        this.deck = new Deck(true)
+        this.deck = new Deck(false)
         this.seat = ["","","",""]
     }
     
     restart(){
         this.turn = -1
         this.deck.reset()
+        for(let i = 0;i<this.players.length;i++)
+            this.players[i].reset()
     }
     leave(i){
         if(i === -1) return
@@ -129,6 +131,7 @@ class Table{
     }
     
     init(){
+        console.log("playerNum", this.players.length)
         const start = Math.floor(Math.random() * this.players.length)
         for (let i=0; i<this.players.length; i++) {
             this.drawByNum(this.players[i].seatNum) 

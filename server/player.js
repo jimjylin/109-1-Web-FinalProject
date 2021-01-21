@@ -8,6 +8,11 @@ class Player{
         this.alive = true
         this.invisible = false
     }
+    reset(){
+        this.hand = []
+        this.alive = true
+        this.invisible = false
+    }
     play(n){
         if(this.hand[0] === n){
             this.hand.splice(0,1)

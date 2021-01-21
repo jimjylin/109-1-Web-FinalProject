@@ -46,7 +46,17 @@ function App() {
   const sendData = (data) => {
     client.send(JSON.stringify(data))
   }
-  
+  const restart = ()=>{
+    setBoard([[],[],[],[]])
+    setInvisible([false, false, false, false])
+    setAlive(playerNames.map((v) =>{return (v === 0)?false:true}))            //array, true if that player is alive
+    setHand([])               //array, the card you have
+    setBody('')
+    setDeckNum(-1)
+    setDeckNum(16)
+    setStart(false)
+    setLastPlay(-1)
+  }
   const sit = ()=>{
     if(username === ''){
       displayStatus({type: 'error', msg: 'Username can\'t be empty'})
@@ -85,11 +95,23 @@ function App() {
   }
   const canChoose = (n)=>{
     console.log(invisible, 'aaa')
-    if(n === '') return false
+    if(n === '') {
+      console.log("n is null")
+      return false
+    }
     n = Number(n)
-    if(n > 4 || n < 0) return false
-    if(!Number.isInteger(n)) return false
-    if(!alive[n] || n === seatNo) return false
+    if(n > 4 || n < 0){
+      console.log("out of range")
+      return false
+    }
+    if(!Number.isInteger(n)){
+      console.log("n is not a interger")
+      return false
+    }
+    if(!alive[n] || n === seatNo){
+      console.log("yourself or dead player")
+      return false
+    } 
     if(invisible[n]){
       let i = (n + 1)%4
       while(i !== n){
@@ -121,7 +143,6 @@ function App() {
         else{
           sendData(['play', [hand[i], choose, guessNum]])
           setBody('')
-          setChoose('')
           setGuessNum('')
           setHand((prev)=>{
             if(i === 0) return [prev[1]]
@@ -137,7 +158,6 @@ function App() {
         else{
           sendData(['play', [hand[i], choose]])
           setBody('')
-          setChoose('')
           setHand((prev)=>{
             if(i === 0) return [prev[1]]
             else return [prev[0]]
@@ -153,7 +173,6 @@ function App() {
         else{
           sendData(['play', [hand[i], Number(choose), Number(hand[1-i])]])
           setBody('')
-          setChoose('')
           setHand((prev)=>{
             if(i === 0) return [prev[1]]
             else return [prev[0]]
@@ -179,7 +198,6 @@ function App() {
         else{
           sendData(['play', [hand[i], Number(choose)]])
           setBody('')
-          setChoose('')
           setHand((prev)=>{
             if(i === 0) return [prev[1]]
             else return [prev[0]]
@@ -197,7 +215,6 @@ function App() {
         else{
           sendData(['play', [hand[i], Number(choose), hand[1-i]]])
           setBody('')
-          setChoose('')
           setHand((prev)=>{
             if(i === 0) return [prev[1]]
             else return [prev[0]]
@@ -281,7 +298,7 @@ function App() {
         else{
           setState('Player'+String(payload)+' Won!!')
         }
-        setStart(false)
+        restart()
         break
       }
       case 'lose':{
@@ -405,15 +422,25 @@ function App() {
             <div 
               id="playertableA1" 
               className="playercardA" 
-              onClick={turn === seatNo?() =>{setBody(0)}:()=>{}} 
+<<<<<<< HEAD
+              onClick={turn === seatNo&&start?() =>{setBody(0)}:()=>{}} 
               style={{"backgroundImage" :  !start || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "3px groove white":"" }}>
+=======
+              onClick={turn === seatNo?() =>{setBody(0)}:()=>{}} 
+              style={{"backgroundImage" :  !start || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "3px groove rgb(238, 234, 9)":"" }}>
+>>>>>>> 1b7ce80c17f7263d46bc4a517e523ced9465f9b4
             </div>
             
             <div 
               id="playertableA2" 
               className="playercardA" 
-              onClick={turn === seatNo?() =>{setBody(1)}:()=>{}} 
+<<<<<<< HEAD
+              onClick={turn === seatNo&&start?() =>{setBody(1)}:()=>{}} 
               style={{"backgroundImage" : !start || turn !== seatNo ? "none":`url(${cards[hand[1]]})`,  border: body === 1 ? "3px groove white":"" }}>
+=======
+              onClick={turn === seatNo?() =>{setBody(1)}:()=>{}} 
+              style={{"backgroundImage" : !start || turn !== seatNo ? "none":`url(${cards[hand[1]]})`,  border: body === 1 ? "3px groove rgb(238, 234, 9)":"" }}>
+>>>>>>> 1b7ce80c17f7263d46bc4a517e523ced9465f9b4
             </div>
           </div>
         </div>
@@ -489,7 +516,14 @@ function App() {
           </div>
         </div>
         <div style={{"background-color":"white", "display":(start?"none":"")}}>
-          <Button id="sitButton" type={seatNo===-1?"":"primary"} shape="circle" icon={seatNo===-1?<UserAddOutlined />:<UserDeleteOutlined />} size={"large"} onClick={seatNo===-1?sit:leave}/>
+          <Button id="sitButton" 
+            type={seatNo===-1?"":"primary"} 
+            shape="circle" 
+            icon={seatNo===-1?<UserAddOutlined />:<UserDeleteOutlined />} 
+            size={"large"} 
+            onClick={seatNo===-1?sit:leave}
+            style={{ backgroundColor: "rgb(236, 131, 131)", borderColor:"rgb(236, 131, 131)", borderRadius:"0px"}}
+          />
         </div>
         
         <div className="tablecenter" style={state === "wait" || state === "Your turn!!"?{}:{display:"none"}}>
@@ -515,11 +549,7 @@ function App() {
           value={username}
           onChange={(e) => setUsername(e.target.value)}
           style={{ marginBottom: 10}}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              bodyRef.current.focus()
-            }
-          }}
+          
           disabled={state !== "lobby"}
         ></Input>
         {/* <Input.Search
@@ -575,16 +605,32 @@ function App() {
         </Select>
       </div> 
       <div>
-        <button className="button" onClick={()=>console.log(playerNames, seatNo)}>
+        <button className="button" onClick={()=>console.log(start, alive)}>
           aaa
+        </button>
+<<<<<<< HEAD
+        {!start?
+          <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={!start&&seatNo!==-1?{}:{visibility:"hidden"}}>
+            Start
+          </Button>:
+          <Button className="button" type="primary" danger onClick={play} style={state === "Your turn!!" ?{}:{visibility:"hidden"}}>
+            Play
+          </Button>
+        }
+        
+        
+=======
+        <button className="button" onClick={()=>{sendData(['reset'])}} style={{display:(seatNo===-1?"none":""), width:"40px"}}>
+          reset
         </button>
        
         <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={!start&&seatNo!==-1?{}:{visibility:"hidden"}}>
           Start
         </Button>
-        <Button className="button" type="primary" danger onClick={play} style={state === "Your turn!!" ?{}:{visibility:"hidden"}}>
+        <Button className="button" type="primary" danger onClick={play} style={state === "Your turn!!" ?{}:{display:"none"}}>
           Play
         </Button>
+>>>>>>> 1b7ce80c17f7263d46bc4a517e523ced9465f9b4
         
               
       </div>
