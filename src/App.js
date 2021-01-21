@@ -505,7 +505,7 @@ function App() {
               "textDecoration": !start || (alive[(seatNo+3)%4])?"":"line-through", 
               "backgroundImage": !start || playerNames[(seatNo+3)%4] !== 0 ? `url(${cards[9]})` : ""
           }}>
-            {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4]+"/"+score[(seatNo+2)%4] :  (!start ? "(waiting for player...)" : "")}
+            {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4]+"/"+score[(seatNo+3)%4] :  (!start ? "(waiting for player...)" : "")}
             <SyncOutlined spin style={{display:((start && (seatNo+3)%4 === turn)?"":"none")}}/>
           
           </div>
