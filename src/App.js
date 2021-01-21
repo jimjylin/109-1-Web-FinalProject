@@ -437,14 +437,14 @@ function App() {
               id="playertableA1" 
               className="playercardA" 
               onClick={turn === seatNo?() =>{setBody(0)}:()=>{}} 
-              style={{"backgroundImage" :  !start || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "3px groove white":"" }}>
+              style={{"backgroundImage" :  !start || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "3px groove rgb(238, 234, 9)":"" }}>
             </div>
             
             <div 
               id="playertableA2" 
               className="playercardA" 
               onClick={turn === seatNo?() =>{setBody(1)}:()=>{}} 
-              style={{"backgroundImage" : !start || turn !== seatNo ? "none":`url(${cards[hand[1]]})`,  border: body === 1 ? "3px groove white":"" }}>
+              style={{"backgroundImage" : !start || turn !== seatNo ? "none":`url(${cards[hand[1]]})`,  border: body === 1 ? "3px groove rgb(238, 234, 9)":"" }}>
             </div>
           </div>
         </div>
@@ -520,7 +520,14 @@ function App() {
           </div>
         </div>
         <div style={{"background-color":"white", "display":(start?"none":"")}}>
-          <Button id="sitButton" type={seatNo===-1?"":"primary"} shape="circle" icon={seatNo===-1?<UserAddOutlined />:<UserDeleteOutlined />} size={"large"} onClick={seatNo===-1?sit:leave}/>
+          <Button id="sitButton" 
+            type={seatNo===-1?"":"primary"} 
+            shape="circle" 
+            icon={seatNo===-1?<UserAddOutlined />:<UserDeleteOutlined />} 
+            size={"large"} 
+            onClick={seatNo===-1?sit:leave}
+            style={{ backgroundColor: "rgb(236, 131, 131)", borderColor:"rgb(236, 131, 131)", borderRadius:"0px"}}
+          />
         </div>
         
         <div className="tablecenter" style={state === "wait" || state === "Your turn!!"?{}:{display:"none"}}>
@@ -609,13 +616,13 @@ function App() {
         <button className="button" onClick={()=>console.log(playerNames, seatNo)}>
           aaa
         </button>
-        <button className="button" onClick={()=>{sendData(['reset'])}} style={{display:(seatNo===-1?"none":"")}}>
+        <button className="button" onClick={()=>{sendData(['reset'])}} style={{display:(seatNo===-1?"none":""), width:"40px"}}>
           reset
         </button>
-        <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={!start&&seatNo!==-1?{}:{visibility:"hidden"}}>
+        <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={!start&&seatNo!==-1?{}:{display:"none"}}>
           Start
         </Button>
-        <Button className="button" type="primary" danger onClick={play} style={state === "Your turn!!" ?{}:{visibility:"hidden"}}>
+        <Button className="button" type="primary" danger onClick={play} style={state === "Your turn!!" ?{}:{display:"none"}}>
           Play
         </Button>
         
