@@ -29,7 +29,21 @@ db.run('DELETE FROM record where game_index > 0')
 // db.run('INSERT INTO record(game_index, winner_index) VALUES(1, 1)')
 // db.run('INSERT INTO record(game_index, winner_index) VALUES(2, 3)')
 // db.run('INSERT INTO record(game_index, winner_index) VALUES(3, 1)')
+function getScore(){
+    let sql = `SELECT DISTINCT Name name FROM playlists
+           ORDER BY name`;
 
+    db.all(sql, [], (err, rows) => {
+        if (err) {
+            throw err;
+        }
+        rows.forEach((row) => {
+            console.log(row.name);
+        });
+        console.log(row)
+    });
+    
+}
 chooseFirstPlayer = (players) => {
     // fetch
     let firstPlayer = -1
@@ -72,7 +86,13 @@ class Table {
         this.seat = ["", "", "", ""]
         this.gameCnt = 0
     }
-
+    reset(){
+        this.turn = -1
+        this.players = []
+        this.deck.reset()
+        this.seat = ["", "", "", ""]
+        this.gameCnt = 0
+    }
     restart() {
         //this.turn = -1
         this.deck.reset()
@@ -81,8 +101,15 @@ class Table {
     }
     leave(i) {
         if (i === -1) return
-        this.players = this.players.filter((p) => { return p.seatNum !== i })
-        this.seat[i] = ""
+        if(turn === -1){
+            this.players = this.players.filter((p) => { return p.seatNum !== i })
+            this.seat[i] = ""
+        }
+        else{
+            this.reset()
+            this.broadcast(["reset"])
+        }
+        
     }
     get Num() {
         return this.players.filter((p) => { return p.alive }).length
@@ -146,9 +173,12 @@ class Table {
     }
     win(n) {
         db.run('INSERT INTO record(game_index, winner_index) VALUES(' + String(this.gameCnt) + ', ' + String(n) + ')')
+        
+        db.run("UPDATE player_score SET score=score+1 WHERE name='" + this.playerByNum(n).name + "'")
         this.broadcast(['win', n])
         this.restart()
         this.turn = n
+        console.log(getScore())
     }
     broadcast(msg) {
         for (let i = 0; i < this.players.length; i++) {
@@ -189,7 +219,7 @@ class Table {
         this.gameCnt += 1
             //db.run('INSERT INTO record(game_index, winner_index) VALUES(3, 1)')
         for (let i = 0; i < this.players.length; i++) {
-            db.run('INSERT INTO player_score(name, score) VALUES(' + this.players[i].name + ',0)')
+            db.run("INSERT INTO player_score(name, score) VALUES('" + this.players[i].name + "',0)")
         }
         console.log("playerNum", this.players.length)
             // const start = Math.floor(Math.random() * this.players.length)

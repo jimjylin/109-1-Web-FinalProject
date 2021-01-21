@@ -47,6 +47,14 @@ function App() {
   const sendData = (data) => {
     client.send(JSON.stringify(data))
   }
+  const reset = ()=>{
+    restart()
+    setState("lobby")
+    setPlayerNames([])
+    setBody('')
+    setUsername('')
+    setScore([0,0,0,0])
+  }
   const restart = ()=>{
     setBoard([[],[],[],[]])
     setInvisible([false, false, false, false])
@@ -256,7 +264,11 @@ function App() {
         setStatus(payload)
         break
       }
-      
+      case 'reset':{
+        setStatus({type:'error', msg:'Somebody left the game, redirect to lobby now...'})
+        reset()
+        
+      }
       case 'seat':{
         setPlayerNames(payload.map((v) =>{return (v === '')?0:v}))
         setAlive(payload.map((v) =>{return (v === '')?false:true}))
@@ -417,7 +429,7 @@ function App() {
             "backgroundImage": `url(${cards[9]})`
           }}>
             
-            {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4]+" ":(!start ? "(waiting for player...)":"")}
+            {playerNames[(seatNo+4)%4] !== 0 ? playerNames[(seatNo+4)%4]+"/"+score[seatNo]:(!start ? "(waiting for player...)":"")}
             <SyncOutlined spin style={{display:((start && seatNo === turn)?"":"none")}}/>
             
           </div>
@@ -445,7 +457,7 @@ function App() {
               "textDecoration": !start || (alive[(seatNo+1)%4])?"":"line-through", 
               "backgroundImage": !start || playerNames[(seatNo+1)%4] !== 0 ? `url(${cards[9]})` : ""
             }}>
-            {playerNames[(seatNo+1)%4] !== 0 ? playerNames[(seatNo+1)%4]+" " :   (!start) ? "(waiting for player...)":""}
+            {playerNames[(seatNo+1)%4] !== 0 ? playerNames[(seatNo+1)%4]+"/"+score[(seatNo+1)%4] :   (!start) ? "(waiting for player...)":""}
             <SyncOutlined spin style={{display:((start && (seatNo+1)%4 === turn)?"":"none")}}/>
           </div>
           <div>
@@ -469,7 +481,7 @@ function App() {
               "textDecoration": !start || (alive[(seatNo+2)%4])?"":"line-through", 
               "backgroundImage": !start || playerNames[(seatNo+2)%4] !== 0 ? `url(${cards[9]})` : ""
           }}>
-            {playerNames[(seatNo+2)%4] !== 0 ? playerNames[(seatNo+2)%4]+" " : (!start ? "(waiting for player...)":"")}
+            {playerNames[(seatNo+2)%4] !== 0 ? playerNames[(seatNo+2)%4]+"/"+score[(seatNo+2)%4] : (!start ? "(waiting for player...)":"")}
             <SyncOutlined spin style={{display:((start && (seatNo+2)%4 === turn)?"":"none")}}/>
           </div>
           <div>
@@ -493,7 +505,7 @@ function App() {
               "textDecoration": !start || (alive[(seatNo+3)%4])?"":"line-through", 
               "backgroundImage": !start || playerNames[(seatNo+3)%4] !== 0 ? `url(${cards[9]})` : ""
           }}>
-            {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4]+" " :  (!start ? "(waiting for player...)" : "")}
+            {playerNames[(seatNo+3)%4] !== 0 ? playerNames[(seatNo+3)%4]+"/"+score[(seatNo+2)%4] :  (!start ? "(waiting for player...)" : "")}
             <SyncOutlined spin style={{display:((start && (seatNo+3)%4 === turn)?"":"none")}}/>
           
           </div>
