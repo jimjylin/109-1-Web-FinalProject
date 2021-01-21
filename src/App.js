@@ -16,6 +16,7 @@ import cards from "./images";
 const client = new WebSocket('ws://localhost:4000')
 const { Option } = Select;
 function App() {
+  const [score, setScore] = useState([0,0,0,0])
   const [board, setBoard] = useState([[],[],[],[]])
   const [invisible, setInvisible] = useState([])
   const [alive, setAlive] = useState([])             //array, true if that player is alive
@@ -290,7 +291,10 @@ function App() {
         break
       }
       case 'win':{
-        
+        setScore((prev)=>
+          prev.map((v, i)=>{
+          return (i === payload)?v+1 : v
+        }))
         if(payload === seatNo){
           //console.log('aaaaa')
           setState('Your Win!')
@@ -422,25 +426,15 @@ function App() {
             <div 
               id="playertableA1" 
               className="playercardA" 
-<<<<<<< HEAD
               onClick={turn === seatNo&&start?() =>{setBody(0)}:()=>{}} 
               style={{"backgroundImage" :  !start || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "3px groove white":"" }}>
-=======
-              onClick={turn === seatNo?() =>{setBody(0)}:()=>{}} 
-              style={{"backgroundImage" :  !start || !alive[seatNo]?"none":`url(${cards[hand[0]]})`, border: body === 0 ? "3px groove rgb(238, 234, 9)":"" }}>
->>>>>>> 1b7ce80c17f7263d46bc4a517e523ced9465f9b4
             </div>
             
             <div 
               id="playertableA2" 
               className="playercardA" 
-<<<<<<< HEAD
               onClick={turn === seatNo&&start?() =>{setBody(1)}:()=>{}} 
               style={{"backgroundImage" : !start || turn !== seatNo ? "none":`url(${cards[hand[1]]})`,  border: body === 1 ? "3px groove white":"" }}>
-=======
-              onClick={turn === seatNo?() =>{setBody(1)}:()=>{}} 
-              style={{"backgroundImage" : !start || turn !== seatNo ? "none":`url(${cards[hand[1]]})`,  border: body === 1 ? "3px groove rgb(238, 234, 9)":"" }}>
->>>>>>> 1b7ce80c17f7263d46bc4a517e523ced9465f9b4
             </div>
           </div>
         </div>
@@ -515,14 +509,14 @@ function App() {
             </div>
           </div>
         </div>
-        <div style={{"background-color":"white", "display":(start?"none":"")}}>
+        <div style={{"background-color":"white", "display":((state==="lobby"||state==="waiting for start...")?"":"none")}}>
           <Button id="sitButton" 
+
             type={seatNo===-1?"":"primary"} 
             shape="circle" 
             icon={seatNo===-1?<UserAddOutlined />:<UserDeleteOutlined />} 
-            size={"large"} 
+            size={"large"}
             onClick={seatNo===-1?sit:leave}
-            style={{ backgroundColor: "rgb(236, 131, 131)", borderColor:"rgb(236, 131, 131)", borderRadius:"0px"}}
           />
         </div>
         
@@ -552,28 +546,7 @@ function App() {
           
           disabled={state !== "lobby"}
         ></Input>
-        {/* <Input.Search
-          className="input"
-          rows={4}
-          value={body}
-          ref={bodyRef}
-          style={{ marginBottom: 10 ,display:"none"}}
-          enterButton="Send"
-          onChange={(e) => setBody(e.target.value)}
-          placeholder="Type a message here..."
-          onSearch={(msg) => {
-            if (!msg || !username) {
-              displayStatus({
-                type: 'error',
-                msg: 'Please enter a username and a message body.'
-              })
-              return
-            }
-
-            sendMessage({ name: username, body: msg })
-            setBody('')
-          }}
-        ></Input.Search> */}
+        
       </div>
       <div>
         <Select 
@@ -619,7 +592,7 @@ function App() {
         
         
         
-              
+             
       </div>
     </div>
   )
