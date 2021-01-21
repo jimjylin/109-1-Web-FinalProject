@@ -46,19 +46,7 @@ function App() {
   const sendData = (data) => {
     client.send(JSON.stringify(data))
   }
-  const sendMessage = ({ name, body })=>{
-    
-    if(body === 'start'){
-      setStart(true)
-      sendData(['start'])
-    }
-    else if(state !== "lobby"){
-      if(body === '')
-        displayStatus({type: 'error', msg: 'please choose a card to play'})
-      else if(!isNaN(Number(body)) && turn === seatNo)
-        playcard(Number(body))
-    }
-  }
+  
   const sit = ()=>{
     if(username === ''){
       displayStatus({type: 'error', msg: 'Username can\'t be empty'})
@@ -250,11 +238,7 @@ function App() {
         setStatus(payload)
         break
       }
-      case 'reset':{
-        reset()
-        console.log("reset success")
-        break
-      }
+      
       case 'seat':{
         setPlayerNames(payload.map((v) =>{return (v === '')?0:v}))
         setAlive(payload.map((v) =>{return (v === '')?false:true}))
@@ -339,31 +323,16 @@ function App() {
         setBoard(()=>temp)
         break
       }
+      case 'error':{
+        displayStatus({type:"error", msg:payload})
+
+        break
+      }
       default:
         break
     }
   }
-  const reset = ()=>{
-    
-    setBoard([[],[],[],[]])
-    setInvisible([])
-    setAlive([])          
-    setGuessNum('')        
-    setGuess(false)
-    setChoose('')
-    setExtraInput(false) 
-    setStatus({})
-    setState('lobby')  
-    setPlayerNames([0,0,0,0])
-    setHand([])               
-    setUsername('')      
-    setBody('')               
-    setseatNo(-1)
-    setTurn(-1)
-    setDeckNum(16)
-    setStart(false)
-    setLastPlay(-1)
-  }
+  
   const displayStatus = (s) => {
     if (s.msg) {
       const { type, msg } = s
@@ -560,7 +529,7 @@ function App() {
           }}
           disabled={state !== "lobby"}
         ></Input>
-        <Input.Search
+        {/* <Input.Search
           className="input"
           rows={4}
           value={body}
@@ -581,7 +550,7 @@ function App() {
             sendMessage({ name: username, body: msg })
             setBody('')
           }}
-        ></Input.Search>
+        ></Input.Search> */}
       </div>
       <div>
         <Select 
@@ -619,7 +588,8 @@ function App() {
         <button className="button" onClick={()=>{sendData(['reset'])}} style={{display:(seatNo===-1?"none":""), width:"40px"}}>
           reset
         </button>
-        <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={!start&&seatNo!==-1?{}:{display:"none"}}>
+       
+        <Button className="button" type="primary" onClick={() => {setStart(true); sendData(['start'])}} style={!start&&seatNo!==-1?{}:{visibility:"hidden"}}>
           Start
         </Button>
         <Button className="button" type="primary" danger onClick={play} style={state === "Your turn!!" ?{}:{display:"none"}}>

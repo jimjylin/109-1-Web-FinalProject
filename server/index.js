@@ -67,8 +67,14 @@ wss.on('connection', ws => {
 
       case 'sitDown': {
         //console.log(payload)
-        table.sitDown(ws, payload[1], payload[0])
-        broadcast(['seat', table.seat])
+        if(table.turn !== -1){
+          ws.send(JSON.stringify(['error', 'The game has started, please wait for next game']))
+        }
+        else{
+          table.sitDown(ws, payload[1], payload[0])
+          broadcast(['seat', table.seat])
+          
+        }
         break
       }
       case 'start':{
@@ -97,11 +103,7 @@ wss.on('connection', ws => {
         broadcast(['seat', table.seat])
         break
       }
-      case 'reset':{
-        console.log("reset")
-        table.reset()
-        break
-      }
+      
       default:{
         console.log("wrong")
         break
