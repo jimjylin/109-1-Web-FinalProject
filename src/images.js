@@ -19,6 +19,6 @@ export default [
   card6,
   card7,
   card8,
-  parchment
-  
+  parchment,
+  background
 ];

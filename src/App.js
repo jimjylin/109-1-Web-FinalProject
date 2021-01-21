@@ -420,7 +420,7 @@ function App() {
             <div 
               id="playertableA2" 
               className="playercardA" 
-              onClick={state === "Your turn!!"?() =>{setBody(0)}:()=>{}} 
+              onClick={state === "Your turn!!"?() =>{setBody(1)}:()=>{}} 
               style={{"backgroundImage" :  state === "lobby" || state === "waiting for start..." || turn !== seatNo ? "none":`url(${cards[hand[1]]})`,  border: body === 1 ? "3px groove white":"" }}>
             </div>
           </div>
@@ -492,8 +492,8 @@ function App() {
             </div>
           </div>
         </div>
-        <div style={{"background-color":"white", "display":(start?"none":"")}}>
-          <Button id="sitButton" type="primary" shape="circle" icon={<UserAddOutlined />} size={"large"} onClick={sit}/>
+        <div style={{ backgroundImage:`${cards[10]}` ,"display":(start?"none":"") }}>
+          <Button id="sitButton" className="sitbutton" type="primary" shape="circle" icon={<UserAddOutlined />} size={"large"} onClick={sit} style={{ backgroundColor: "rgb(236, 131, 131)", borderColor:"rgb(236, 131, 131)", borderRadius:"0px"}}/>
 
         </div>
         

@@ -3,11 +3,11 @@
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  height: 90vh;
-  width: 600px;
+  height: 98vh;
+  width: 565px;
   margin: auto;
   background-image: url("./img/background2.jpg");
-  background-size: contain;
+  background-size: cover;
   opacity: 1;
   /* border-radius: 25px; */
 }
@@ -91,7 +91,7 @@ span.anticon.anticon-user-add {
 
 .playertableA {
 	position:absolute;
-	top: 60%;
+	top: 62%;
 	left: 43%;
 	height: 120px; 
 	width: 150px;
@@ -101,7 +101,7 @@ span.anticon.anticon-user-add {
 
 .playertableB {
 	position:absolute;
-	top: 37%;
+	top: 38%;
 	left: 59%;
 	height: 120px; 
 	width: 150px;
@@ -121,7 +121,7 @@ span.anticon.anticon-user-add {
 
 .playertableD {
 	position:absolute;
-	top: 37%;
+	top: 38%;
 	left: 27%;
 	height: 120px; 
 	width: 150px;
@@ -131,7 +131,7 @@ span.anticon.anticon-user-add {
 
 .tablecenter {
 	position: absolute;
-	top: 37%;
+	top: 38%;
 	left: 43%;
 	height: 120px; 
 	width: 150px;
@@ -205,4 +205,10 @@ span.anticon.anticon-user-add {
 	background-color: rgb(236, 131, 131);
 	font-family: fantasy ;
 
+}
+
+.sitbutton {
+	border-radius:99px;
+	border-color: beige;
+	background-color:  rgb(236, 131, 131);
 }
